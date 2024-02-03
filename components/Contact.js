@@ -18,7 +18,8 @@ const Contact = () => {
         })
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         const res = await fetch('/api/send', {
             method: 'POST',
             headers: {
@@ -34,7 +35,7 @@ const Contact = () => {
         <div>
             <br />
             <h2 className="subtitulo" id="contact">Contactame</h2>
-            <form className="formulario-contacto">
+            <form onSubmit={handleSubmit} className="formulario-contacto">
                 <input
                     type='text'
                     placeholder='Nombre'
@@ -55,7 +56,7 @@ const Contact = () => {
                         onFormUpdate('message', e.target.value)
                     }}
                 ></textarea>
-                <button onClick={handleSubmit}>Enviar</button>
+                <button type="submit">Enviar</button>
             </form>
         </div >
     )
