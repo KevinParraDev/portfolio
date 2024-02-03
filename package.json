@@ -1,0 +1,26 @@
+{
+  "name": "next-simple-portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "start": "next"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootswatch": "^5.3.2",
+    "cors": "^2.8.5",
+    "eslint-config-next": "^13.5.6",
+    "next": "^13.5.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "resend": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.14",
+    "@types/react": "18.2.48"
+  }
+}
