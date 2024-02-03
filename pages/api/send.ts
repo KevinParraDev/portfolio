@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend('re_3cMWWpdQ_GwhPyTForu1rkpQovFFVpxu3');
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
     const datos = JSON.parse(req.body)
     console.log(datos.name)
     const nombre = datos.name;
