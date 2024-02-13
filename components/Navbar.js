@@ -44,7 +44,7 @@ const Navbar = () => {
                             href="/#home"
                             className={activeLink === 'home' ? 'active' : ''} onClick={() => onUpdateActiveLink('home')}
                         >
-                            Sobre mi
+                            Home
                         </Link>
                     </li>
                     <li>
@@ -52,7 +52,7 @@ const Navbar = () => {
                             href="/#skills"
                             className={activeLink === 'skills' ? 'active' : ''} onClick={() => onUpdateActiveLink('skills')}
                         >
-                            Habilidades
+                            Skills
                         </Link>
                     </li>
                     <li>
@@ -60,7 +60,7 @@ const Navbar = () => {
                             href="/#projects"
                             className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('projects')}
                         >
-                            Proyectos
+                            Projects
                         </Link>
                     </li>
                 </ul>
@@ -90,28 +90,28 @@ const Navbar = () => {
             </div>
             <div className="contactame">
                 <Link href="/#contact" className="nav-icon">
-                    CONTACTAME
+                    LET'S CONTACT
                 </Link>
             </div>
 
             <div className="menu" onClick={() => handleMovileMenu(true)}>Menu</div>
             <div className={showMovileMenu ? "overlay" : "overlay-close"}>
-                <div className="close" onClick={() => handleMovileMenu(false)}>Cerrar</div>
+                <div className="close" onClick={() => handleMovileMenu(false)}>Close</div>
                 <div className="overlay-content">
                     <Link href="/#home"
                         className={activeLink === 'home' ? 'active' : ''} onClick={() => onUpdateActiveLink('home')}>
-                        Sobre mi
+                        Home
                     </Link>
                     <Link href="/#skills"
                         className={activeLink === 'skills' ? 'active' : ''} onClick={() => onUpdateActiveLink('skills')}>
-                        Habilidades
+                        Skills
                     </Link>
                     <Link href="/#projects"
                         className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('projects')}>
-                        Proyectos
+                        Projects
                     </Link>
                     <Link href="/#contact" className="nav-icon">
-                        CONTACTAME
+                        LET'S CONTACT
                     </Link>
                     <div className="overlay-nav-buttons">
                         <Link href="https://github.com/KevinParraDev?tab=repositories" className="nav-icon" target="_blank">

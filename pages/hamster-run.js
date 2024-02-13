@@ -17,7 +17,7 @@ const Github = () => {
     return (
         <Layout>
             <div className="game">
-                <h1>Hamster Run (en desarrollo)</h1>
+                <h1>Hamster Run (in progress)</h1>
                 <div className="game-box">
                     <div>
                         <Image
@@ -48,11 +48,11 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Hamster Run es un juego tipo runner en el que eres un hamster que irá corriendo a lo largo del mapa y tu deber será esquivar todos los obstaculos, en el mapa puedes encontrar diferentes poderes que serviran para ayudarte o hacerte mas dificil la partida</p>
-                        <p><br />Cuenta con un menu de inicio que permite personalizar el personaje. los diseños y animaciones de este videojuego fueron elaborados en animate cc y photoshop</p>
+                        <h2>Description</h2>
+                        <p>Hamster Run is a runner-style game where you play as a hamster running along the map, and your duty is to dodge all obstacles. Throughout the map, you can find different power-ups that will either help you or make the game more challenging.</p>
+                        <p><br />It features a start menu that allows you to customize the character. The designs and animations of this video game were created in Animate CC and Photoshop.</p>
                         <h2>Roles</h2>
-                        <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
+                        <p>• Game Development <br /> • Game Design <br /> • 2D Art <br /> • Animation</p>
 
                     </div>
                 </div>

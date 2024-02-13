@@ -48,14 +48,14 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Zeri's Adventure es un corto juego de plataformas tipo metroidvania, en el jugarás como Zeri, una niña peli-azul que por razones desconocidas se encuentra al interior de una cueva, tu objetivo será lograr salir de ella, pero para ello necesitas superar todas las adversidades que trae la cueva: pozos de acido, arbustos venenosos y por supuesto, mounstros.</p>
-                        <p><br />A lo largo del mapa vas a adquirir diferentes habilidades que te permitirán seguir avanzando, ¡buena suerte!</p>
+                        <h2>Description</h2>
+                        <p>Zeri's Adventure is a short metroidvania-style platformer game, where you play as Zeri, a blue-haired girl who, for unknown reasons, finds herself inside a cave. Your goal is to escape, but to do so, you need to overcome all the adversities that the cave brings: acid pits, poisonous bushes, and of course, monsters.</p>
+                        <p><br />Throughout the map, you will acquire different abilities that will allow you to keep progressing. Good luck!</p>
                         <h2>Roles</h2>
-                        <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
-                        <h2>Juega ahora!</h2>
+                        <p>• Game Development <br /> • Game Design <br /> • 2D Art <br /> • Animation</p>
+                        <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/zeris-adventure">Itch.io</a>
-                        <h2>Repositorio</h2>
+                        <h2>Repository</h2>
                         <a className="link" target="_blank" href="https://github.com/KevinParraDev/Zeri-s-Adventure">Github.com</a>
 
                     </div>

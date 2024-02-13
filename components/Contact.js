@@ -34,29 +34,29 @@ const Contact = () => {
     return (
         <div>
             <br />
-            <h2 className="subtitulo" id="contact">Contactame</h2>
+            <h2 className="subtitulo" id="contact">Let's Contact</h2>
             <form onSubmit={handleSubmit} className="formulario-contacto">
                 <input
                     type='text'
-                    placeholder='Nombre'
+                    placeholder='Name'
                     onChange={(e) => {
                         onFormUpdate('name', e.target.value)
                     }}
                 ></input>
                 <input
                     type='email'
-                    placeholder='Correo'
+                    placeholder='Email'
                     onChange={(e) => {
                         onFormUpdate('email', e.target.value)
                     }}
                 ></input>
                 <textarea
-                    placeholder='Mensaje'
+                    placeholder='Message'
                     onChange={(e) => {
                         onFormUpdate('message', e.target.value)
                     }}
                 ></textarea>
-                <button type="submit">Enviar</button>
+                <button type="submit">Send</button>
             </form>
         </div >
     )

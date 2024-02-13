@@ -10,7 +10,7 @@ import hamster from "../public/img//projects/hamster1.png"
 const Projects = () => {
     return (
         <div>
-            <h1 className="subtitulo" id="projects">Proyectos</h1>
+            <h1 className="subtitulo" id="projects">Projects</h1>
             <div className="proyectos">
                 <div className="proyectos-cards">
                     <Link href="/knock-it-out">
@@ -60,7 +60,7 @@ const Projects = () => {
                             className="image-project"
                         />
                     </Link>
-                    <p>Grecko Vs Machine  (en desarrollo)</p>
+                    <p>Grecko Vs Machine  (in progress)</p>
                 </div>
                 <div className="proyectos-cards">
                     <Link href="/hamster-run">
@@ -70,7 +70,7 @@ const Projects = () => {
                             className="image-project"
                         />
                     </Link>
-                    <p>Hamster Run  (en desarrollo)</p>
+                    <p>Hamster Run  (in progress)</p>
                 </div>
             </div>
         </div>

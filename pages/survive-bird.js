@@ -48,13 +48,14 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Survive Bird es un Juego casual para Android en el que serás un ave y tendrás sobrevivir la mayor cantidad de tiempo que te sea posible esquivando todos los obstáculos que aparecen en pantalla, el juego cuenta con mas de 30 aves diferentes, consíguelas todas!</p>
+
+                        <h2>Description</h2>
+                        <p>Survive Bird is a casual Android game where you'll be a bird and you'll have to survive for as long as possible by dodging all the obstacles that appear on the screen. The game features over 30 different birds; collect them all!</p>
                         <h2>Roles</h2>
-                        <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
-                        <h2>Juega ahora!</h2>
+                        <p>• Game Development <br /> • Game Design <br /> • 2D Art <br /> • Animation</p>
+                        <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/survive-bird">Itch.io</a>
-                        <h2>Repositorio</h2>
+                        <h2>Repository</h2>
                         <a className="link" target="_blank" href="https://github.com/KevinParraDev/Survive-Bird">Github.com</a>
 
                     </div>

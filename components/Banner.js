@@ -2,9 +2,9 @@ const Banner = () => {
     return (
         <div className="banner" id="home">
             <div className="welcome">
-                <h2>Bienvenido a mi portafolio</h2>
+                <h2>Welcome to my portfolio</h2>
             </div>
-            <h1>SOY KEVIN PARRA</h1>
+            <h1>I'M KEVIN PARRA</h1>
         </div>
     )
 }

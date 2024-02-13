@@ -48,13 +48,14 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Knock It Out: The Show es un juego plataformer2D para dos jugadores en el cual uno de ellos tomará control del participante del concurso Knock It Out, mientras que el otro será el público del show, que no solo se reirá de los fallos del participante sino que también le hará la vida imposible lanzandole pasteles para hacerlo fallar.</p>
+
+                        <h2>Description</h2>
+                        <p>Knock It Out: The Show is a 2D platformer game for two players in which one of them will take control of the Knock It Out contestant, while the other will be the audience of the show, who will not only laugh at the contestant's mistakes but also make their life impossible by throwing pies at them to make them fail.</p>
                         <h2>Roles</h2>
                         <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
-                        <h2>Juega ahora!</h2>
+                        <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/knock-it-out-the-show">Itch.io</a>
-                        <h2>Repositorio</h2>
+                        <h2>Repository</h2>
                         <a className="link" target="_blank" href="https://github.com/KevinParraDev/Knock-It-Out-The-Show">Github.com</a>
 
                     </div>

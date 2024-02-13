@@ -17,7 +17,7 @@ const Github = () => {
     return (
         <Layout>
             <div className="game">
-                <h1>Grecko Vs Machine (en desarrollo)</h1>
+                <h1>Grecko Vs Machine (in progress)</h1>
                 <div className="game-box">
                     <div>
                         <Image
@@ -48,12 +48,12 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Grecko Vs Machine es el videojuego en el que estoy trabajando actualmente, se trata de un plataformer 2D tipo metroidvania en el cual eres un lagarto llamado grecko que tiene que salvar al mundo de una invasión de robots.</p>
-                        <p><br />Se espera lanzar la beta antes de mediados del 2024.</p>
+                        <h2>Description</h2>
+                        <p>Grecko Vs Machine is the video game I am currently working on. It's a 2D platformer game in the style of metroidvania where you play as a lizard named Grecko who has to save the world from a robot invasion.</p>
+                        <p><br />We expect to release the beta before mid-2024.</p>
                         <h2>Roles</h2>
-                        <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
-                        <h2>(Disponible a mediados de 2024)</h2>
+                        <p>• Game Development <br /> • Game Design <br /> • 2D Art <br /> • Animation</p>
+                        <h2>(Available by mid-2024)</h2>
 
                     </div>
                 </div>

@@ -48,14 +48,14 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
-                        <h2>Descripción</h2>
-                        <p>Esta es una recreación del juego de mesa Dominó hecha para la materia Estructura de datos de la Universidad Nacional de Colombia sede Medellin, el juego cuenta con solo una modalidad, el jugador contra 3 maquinas, cada uno con 7 fichas repartidas al azar.</p>
-                        <p><br />El juego termina cuando alguno de los jugadores se quede sin fichas o si el juego se ahoga (Ninguno de los jugadores puede mover), en ese caso gana el jugador que menos puntos tenga al sumar los valores de sus fichas.</p>
+                        <h2>Description</h2>
+                        <p>This is a recreation of the Domino board game made for the Data Structures course at the National University of Colombia, Medellin campus. The game has only one mode: player versus 3 AI opponents, each with 7 randomly distributed tiles.</p>
+                        <p><br />The game ends when any player runs out of tiles or if the game stalls (none of the players can move). In that case, the player with the fewest points wins by adding up the values of their tiles.</p>
                         <h2>Roles</h2>
-                        <p>• Game Development <br /> • Game Desing <br /> • 2D Art</p>
-                        <h2>Juega ahora!</h2>
+                        <p>• Game Development <br /> • Game Design <br /> • 2D Art</p>
+                        <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/domino">Itch.io</a>
-                        <h2>Repositorio</h2>
+                        <h2>Repository</h2>
                         <a className="link" target="_blank" href="https://github.com/KevinParraDev/Domino">Github.com</a>
 
                     </div>
