@@ -46,6 +46,7 @@ const Github = () => {
                                 onClick={() => handleScreenshot(2)}
                             />
                         </div>
+                        <br />
                     </div>
                     <div>
 
@@ -53,10 +54,16 @@ const Github = () => {
                         <p>Knock It Out: The Show is a 2D platformer game for two players in which one of them will take control of the Knock It Out contestant, while the other will be the audience of the show, who will not only laugh at the contestant's mistakes but also make their life impossible by throwing pies at them to make them fail.</p>
                         <h2>Roles</h2>
                         <p>• Game Development <br /> • Game Desing <br /> • 2D Art <br /> • Animation</p>
+                        <h2>Tools and languages</h2>
+                        <p>• Unity 2D <br /> • C# <br /> • Aseprite</p>
                         <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/knock-it-out-the-show">Itch.io</a>
                         <h2>Repository</h2>
                         <a className="link" target="_blank" href="https://github.com/KevinParraDev/Knock-It-Out-The-Show">Github.com</a>
+                        {/* <h2>Desarrollo</h2>
+                        <p>Este videojuego fue realizado para la Global Game Jam 2024: Sede Medellín, el tiempo de desarrollo del proyecto fue de 48 horas. En este proyecto tuve el papel de programador, artista 2D y game designer, en su desarrollo usé el motor de videojuegos Unity, el lenguaje de programación C# y los assets los hice en aseprite.</p> */}
+
+
 
                     </div>
                 </div>

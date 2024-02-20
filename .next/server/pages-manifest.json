@@ -2,8 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/grecko-vs-machine": "pages/grecko-vs-machine.js",
-  "/": "pages/index.js",
-  "/zeri-adventure": "pages/zeri-adventure.js",
-  "/hamster-run": "pages/hamster-run.js"
+  "/knock-it-out": "pages/knock-it-out.js",
+  "/": "pages/index.js"
 }
