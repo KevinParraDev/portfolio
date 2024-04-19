@@ -1,4 +1,5 @@
 import Navbar from "./Navbar"
+import Fotter from "./Fotter"
 
 const Layout = ({ children }) => (
     <>
@@ -8,6 +9,7 @@ const Layout = ({ children }) => (
             {children}
         </main>
 
+        <Fotter />
     </>
 )
 

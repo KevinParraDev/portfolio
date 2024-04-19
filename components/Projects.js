@@ -73,6 +73,9 @@ const Projects = () => {
                     <p>Hamster Run  (in progress)</p>
                 </div>
             </div>
+
+            <br />
+            <br />
         </div>
     )
 }

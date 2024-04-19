@@ -89,8 +89,8 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className="contactame">
-                <Link href="/#contact" className="nav-icon">
-                    LET'S CONTACT
+                <Link href="/galery" className="nav-icon">
+                    GALERY
                 </Link>
             </div>
 
