@@ -38,6 +38,12 @@ body {
     transition: 0.32s ease-in-out;
 }
 
+@media screen and (max-width:600px) {
+    body {
+        width: 100%;
+    }
+}
+
 .navbar.scrolled {
     background-color: #11000298;
     transition: 0.32s ease-in-out;
@@ -358,6 +364,14 @@ body {
         font-size: 30px;
     }
 
+    .game h2 {
+        font-size: 20px;
+    }
+
+    .game h3 {
+        font-size: 15px;
+    }
+
     .game-box {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -366,6 +380,12 @@ body {
 
     .game-box p {
         font-size: 20px;
+    }
+
+    .game {
+        align-items: center;
+        text-align: center;
+        padding: 20px;
     }
 }
 

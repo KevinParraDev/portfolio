@@ -110,8 +110,8 @@ const Navbar = () => {
                         className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('projects')}>
                         Projects
                     </Link>
-                    <Link href="/#contact" className="nav-icon">
-                        LET'S CONTACT
+                    <Link href="/galery" className="nav-icon">
+                        Galery
                     </Link>
                     <div className="overlay-nav-buttons">
                         <Link href="https://github.com/KevinParraDev?tab=repositories" className="nav-icon" target="_blank">
