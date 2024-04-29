@@ -57,6 +57,14 @@ const Navbar = () => {
                     </li>
                     <li>
                         <Link
+                            href="/#about"
+                            className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('about')}
+                        >
+                            About Me
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             href="/#projects"
                             className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('projects')}
                         >
@@ -88,10 +96,17 @@ const Navbar = () => {
                     />
                 </Link>
             </div>
-            <div className="contactame">
-                <Link href="/galery" className="nav-icon">
-                    GALERY
-                </Link>
+            <div className="right-buttons">
+                <div className="contactame">
+                    <Link href="/galery" className="nav-icon">
+                        GALERY
+                    </Link>
+                </div>
+                {/* <div className="contactame">
+                    <Link href="/galery" className="nav-icon">
+                        EN
+                    </Link>
+                </div> */}
             </div>
 
             <div className="menu" onClick={() => handleMovileMenu(true)}>Menu</div>
@@ -105,6 +120,10 @@ const Navbar = () => {
                     <Link href="/#skills"
                         className={activeLink === 'skills' ? 'active' : ''} onClick={() => onUpdateActiveLink('skills')}>
                         Skills
+                    </Link>
+                    <Link href="/#about"
+                        className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('about')}>
+                        About Me
                     </Link>
                     <Link href="/#projects"
                         className={activeLink === 'projects' ? 'active' : ''} onClick={() => onUpdateActiveLink('projects')}>

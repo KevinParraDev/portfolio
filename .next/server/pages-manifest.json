@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/domino": "pages/domino.js",
-  "/survive-bird": "pages/survive-bird.js",
-  "/zeri-adventure": "pages/zeri-adventure.js"
+  "/knock-it-out": "pages/knock-it-out.js",
+  "/galery": "pages/galery.js"
 }
