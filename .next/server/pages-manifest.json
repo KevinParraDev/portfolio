@@ -2,6 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/galery": "pages/galery.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/domino": "pages/domino.js",
+  "/survive-bird": "pages/survive-bird.js",
+  "/zeri-adventure": "pages/zeri-adventure.js"
 }

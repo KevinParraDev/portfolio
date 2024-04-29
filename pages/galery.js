@@ -133,7 +133,7 @@ const Github = () => {
                     />
                 </div>
                 <h3>Bull from Zeri's Adventure</h3>
-                <div>
+                <div className="bull-container">
                     <Image
                         src={zae2}
                         alt="kio icon"

@@ -27,10 +27,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/galery": [
+    "/domino": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/galery.js"
+      "static/chunks/pages/domino.js"
+    ],
+    "/zeri-adventure": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/zeri-adventure.js"
     ]
   },
   "ampFirstPages": []

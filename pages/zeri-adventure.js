@@ -3,7 +3,10 @@ import Image from "next/image";
 import kio1 from "../public/img//projects/zeri1.png"
 import kio2 from "../public/img//projects/zeri2.png"
 import kio3 from "../public/img//projects/zeri3.png"
+import kioV from "../public/img//projects/zeriV.png"
 import { useState } from "react";
+import React from 'react'
+import ReactPlayer from 'react-player'
 
 const Github = () => {
     const [activeImage, setActiveImage] = useState(0)
@@ -12,7 +15,7 @@ const Github = () => {
         setActiveImage(value)
     }
 
-    const screenshots = [kio1, kio2, kio3];
+    const screenshots = [kioV, kio1, kio2, kio3];
 
     return (
         <Layout>
@@ -20,30 +23,47 @@ const Github = () => {
                 <h1>Zeri's Adventure</h1>
                 <div className="game-box">
                     <div>
-                        <Image
-                            src={screenshots[activeImage]}
-                            alt="kio icon"
-                            quality={100}
-                            className="image-project"
-                        />
+                        {
+                            activeImage == 0 ?
+                                <div className="video">
+                                    <ReactPlayer url='https://www.youtube.com/watch?v=cMdAMpP4f-E'
+                                        loop
+                                        controls
+                                        width={"100%"}
+                                        height={"100%"}
+                                    />
+                                </div> :
+                                <Image
+                                    src={screenshots[activeImage]}
+                                    alt="kio icon"
+                                    quality={100}
+                                    className="image-project"
+                                />
+                        }
                         <div className="carrusel-lista">
                             <Image
-                                src={kio1}
+                                src={kioV}
                                 alt="kio icon"
                                 className={activeImage === 0 ? "screenshot-active" : "screenshot"}
                                 onClick={() => handleScreenshot(0)}
                             />
                             <Image
-                                src={kio2}
+                                src={kio1}
                                 alt="kio icon"
                                 className={activeImage === 1 ? "screenshot-active" : "screenshot"}
                                 onClick={() => handleScreenshot(1)}
                             />
                             <Image
-                                src={kio3}
+                                src={kio2}
                                 alt="kio icon"
                                 className={activeImage === 2 ? "screenshot-active" : "screenshot"}
                                 onClick={() => handleScreenshot(2)}
+                            />
+                            <Image
+                                src={kio3}
+                                alt="kio icon"
+                                className={activeImage === 3 ? "screenshot-active" : "screenshot"}
+                                onClick={() => handleScreenshot(3)}
                             />
                         </div>
                     </div>
