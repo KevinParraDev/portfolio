@@ -6,11 +6,13 @@ import surviveBird from "../public/img//projects/surviveBird1.png"
 import grecko from "../public/img//projects/grecko1.png"
 import domino from "../public/img//projects/domino1.png"
 import hamster from "../public/img//projects/hamster1.png"
+import ReactPlayer from 'react-player'
 
 const Projects = () => {
     return (
         <div>
             <h1 className="subtitulo" id="projects">Projects</h1>
+
             <div className="proyectos">
                 <div className="proyectos-cards">
                     <Link href="/knock-it-out">
