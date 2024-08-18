@@ -1,7 +1,8 @@
 {
   "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/grecko-vs-machine": "pages/grecko-vs-machine.js",
   "/": "pages/index.js",
-  "/galery": "pages/galery.js"
+  "/hamster-run": "pages/hamster-run.js"
 }

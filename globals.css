@@ -99,6 +99,25 @@ body {
     margin-inline: 10px;
 }
 
+.project-buttons {
+    display: inline-flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.play-button {
+    border: #efc0b9 3px solid;
+    border-radius: 5px;
+    padding: 8px;
+    padding-inline: 40px;
+    transition: all 200ms;
+    margin-inline: 50px;
+}
+
+.play-button a {
+    text-decoration: none;
+}
+
 .contactame:hover {
     filter: brightness(120%);
 }
@@ -353,7 +372,7 @@ body {
     .videos-proyectos {
         width: 100%;
         height: auto;
-        padding: 0px 80px;
+        padding: 0px 20px;
         display: grid;
         grid-template-columns: 1fr;
         gap: 30px;
@@ -670,11 +689,11 @@ textarea {
 }
 
 @media screen and (max-width:800px) {
-    /* #about {
+    #about {
         text-align: justify;
         padding-inline: 1vh;
         margin-bottom: 50px;
-    } */
+    }
 
     .about-container {
         width: 100%;
@@ -685,6 +704,14 @@ textarea {
         gap: 10px;
         align-items: center;
         justify-content: center;
+    }
+
+    .image-profile-container {
+        perspective: 1000px;
+        width: 300px;
+        height: 300px;
+        position: relative;
+        cursor: pointer;
     }
 
     /* 

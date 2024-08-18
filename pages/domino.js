@@ -7,6 +7,7 @@ import kioV from "../public/img//projects/dominoV.png"
 import { useState } from "react";
 import React from 'react'
 import ReactPlayer from 'react-player'
+import Link from "next/link";
 
 const Github = () => {
     const [activeImage, setActiveImage] = useState(0)
@@ -68,15 +69,29 @@ const Github = () => {
                         </div>
                     </div>
                     <div>
+
+                        <div className="project-buttons">
+                            <div className="play-button">
+                                <Link target="_blank" href="https://kevin-parra.itch.io/domino">
+                                    PLAY
+                                </Link>
+                            </div>
+                            <div className="play-button">
+                                <Link target="_blank" href="https://github.com/KevinParraDev/Domino">
+                                    GitHub
+                                </Link>
+                            </div>
+                        </div>
+
                         <h2>Description</h2>
                         <p>This is a recreation of the Domino board game made for the Data Structures course at the National University of Colombia, Medellin campus. The game has only one mode: player versus 3 AI opponents, each with 7 randomly distributed tiles.</p>
                         <p><br />The game ends when any player runs out of tiles or if the game stalls (none of the players can move). In that case, the player with the fewest points wins by adding up the values of their tiles.</p>
                         <h2>Roles</h2>
                         <p>• Game Development <br /> • Game Design <br /> • 2D Art</p>
-                        <h2>Play Now!</h2>
+                        {/* <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/domino">Itch.io</a>
                         <h2>Repository</h2>
-                        <a className="link" target="_blank" href="https://github.com/KevinParraDev/Domino">Github.com</a>
+                        <a className="link" target="_blank" href="https://github.com/KevinParraDev/Domino">Github.com</a> */}
 
                     </div>
                 </div>

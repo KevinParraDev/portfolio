@@ -7,6 +7,7 @@ import kioV from "../public/img//projects/surviveBirdV.png"
 import { useState } from "react";
 import React from 'react'
 import ReactPlayer from 'react-player'
+import Link from "next/link";
 
 const Github = () => {
     const [activeImage, setActiveImage] = useState(0)
@@ -69,14 +70,27 @@ const Github = () => {
                     </div>
                     <div>
 
+                        <div className="project-buttons">
+                            <div className="play-button">
+                                <Link target="_blank" href="https://kevin-parra.itch.io/survive-bird">
+                                    PLAY
+                                </Link>
+                            </div>
+                            <div className="play-button">
+                                <Link target="_blank" href="https://github.com/KevinParraDev/Survive-Bird">
+                                    GitHub
+                                </Link>
+                            </div>
+                        </div>
+
                         <h2>Description</h2>
                         <p>Survive Bird is a casual Android game where you'll be a bird and you'll have to survive for as long as possible by dodging all the obstacles that appear on the screen. The game features over 30 different birds; collect them all!</p>
                         <h2>Roles</h2>
                         <p>• Game Development <br /> • Game Design <br /> • 2D Art <br /> • Animation</p>
-                        <h2>Play Now!</h2>
+                        {/* <h2>Play Now!</h2>
                         <a className="link" target="_blank" href="https://kevin-parra.itch.io/survive-bird">Itch.io</a>
                         <h2>Repository</h2>
-                        <a className="link" target="_blank" href="https://github.com/KevinParraDev/Survive-Bird">Github.com</a>
+                        <a className="link" target="_blank" href="https://github.com/KevinParraDev/Survive-Bird">Github.com</a> */}
 
                     </div>
                 </div>
