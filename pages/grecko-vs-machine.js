@@ -18,6 +18,8 @@ const Github = () => {
         <Layout>
             <div className="game">
                 <h1>Grecko Vs Machine (in progress)</h1>
+                <h2>2D Platformer Game</h2>
+
                 <div className="game-box">
                     <div>
                         <Image

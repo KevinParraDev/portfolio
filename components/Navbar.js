@@ -98,6 +98,11 @@ const Navbar = () => {
             </div>
             <div className="right-buttons">
                 <div className="contactame">
+                    <Link href="https://drive.google.com/file/d/1Tm-eH6K-VsQhFa5zZZ3BZuEEi7UQwZ2G/view?usp=sharing" className="nav-icon" target="_blank">
+                        RESUME
+                    </Link>
+                </div>
+                <div className="contactame">
                     <Link href="/galery" className="nav-icon">
                         GALERY
                     </Link>
@@ -131,6 +136,9 @@ const Navbar = () => {
                     </Link>
                     <Link href="/galery" className="nav-icon">
                         Galery
+                    </Link>
+                    <Link href="https://drive.google.com/file/d/1Tm-eH6K-VsQhFa5zZZ3BZuEEi7UQwZ2G/view?usp=sharing" className="nav-icon" target="_blank">
+                        Resume
                     </Link>
                     <div className="overlay-nav-buttons">
                         <Link href="https://github.com/KevinParraDev?tab=repositories" className="nav-icon" target="_blank">

@@ -12,12 +12,13 @@ const Github = () => {
         setActiveImage(value)
     }
 
-    const screenshots = [kio1, kio2, kio3];
+    const screenshots = [kio2, kio1, kio3];
 
     return (
         <Layout>
             <div className="game">
                 <h1>Hamster Run (in progress)</h1>
+                <h2>Vertical Runner Game</h2>
                 <div className="game-box">
                     <div>
                         <Image
@@ -28,13 +29,13 @@ const Github = () => {
                         />
                         <div className="carrusel-lista">
                             <Image
-                                src={kio1}
+                                src={kio2}
                                 alt="kio icon"
                                 className={activeImage === 0 ? "screenshot-active" : "screenshot"}
                                 onClick={() => handleScreenshot(0)}
                             />
                             <Image
-                                src={kio2}
+                                src={kio1}
                                 alt="kio icon"
                                 className={activeImage === 1 ? "screenshot-active" : "screenshot"}
                                 onClick={() => handleScreenshot(1)}

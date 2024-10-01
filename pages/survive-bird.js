@@ -22,6 +22,7 @@ const Github = () => {
         <Layout>
             <div className="game">
                 <h1>Survive Bird</h1>
+                <h2>Hypercasual Game</h2>
                 <div className="game-box">
                     <div>
                         {

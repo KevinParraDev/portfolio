@@ -1,6 +1,6 @@
 import Image from "next/image";
-import skillsImage from "../public/img/SkillsEn.png"
-import skillsMovilImage from "../public/img/SkillsCelEn.png"
+import skillsImage from "../public/img/SkillsEn2.png"
+import skillsMovilImage from "../public/img/SkillsCelEn2.png"
 
 const Skills = () => {
     return (

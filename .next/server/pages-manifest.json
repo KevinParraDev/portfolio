@@ -1,8 +1,8 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/grecko-vs-machine": "pages/grecko-vs-machine.js",
+  "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/hamster-run": "pages/hamster-run.js"
+  "/maquinas-del-futuro": "pages/maquinas-del-futuro.js",
+  "/vr-unal": "pages/vr-unal.js"
 }

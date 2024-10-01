@@ -22,6 +22,7 @@ const Github = () => {
         <Layout>
             <div className="game">
                 <h1>Knock It Out: The Show</h1>
+                <h2>2D Platformer Game</h2>
                 <div className="game-box">
                     <div>
                         {
