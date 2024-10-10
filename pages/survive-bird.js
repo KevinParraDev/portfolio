@@ -73,7 +73,7 @@ const Github = () => {
 
                         <div className="project-buttons">
                             <div className="play-button">
-                                <Link target="_blank" href="https://kevin-parra.itch.io/survive-bird">
+                                <Link target="_blank" href="https://play.google.com/store/apps/details?id=com.KawiGames.SurviveBird">
                                     PLAY
                                 </Link>
                             </div>
