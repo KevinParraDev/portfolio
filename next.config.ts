@@ -10,8 +10,10 @@ const oldProjectSlugs = [
   "maquinas-del-futuro",
   "el-amigo-robot",
   "domino",
-  "vr-unal",
 ];
+
+// Proyectos que ya no están en el portafolio: sus links llevan a la lista de proyectos.
+const removedProjectSlugs = ["vr-unal"];
 
 const nextConfig: NextConfig = {
   async redirects() {
@@ -21,6 +23,10 @@ const nextConfig: NextConfig = {
         destination: `/projects/${slug}`,
         permanent: true,
       })),
+      ...removedProjectSlugs.flatMap((slug) => [
+        { source: `/${slug}`, destination: "/#projects", permanent: false },
+        { source: `/projects/${slug}`, destination: "/#projects", permanent: false },
+      ]),
       { source: "/galery", destination: "/gallery", permanent: true },
     ];
   },

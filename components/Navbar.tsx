@@ -11,9 +11,9 @@ const RESUME_URL = "https://drive.google.com/file/d/1Tm-eH6K-VsQhFa5zZZ3BZuEEi7U
 
 const sections = [
   { id: "home", label: "Home" },
+  { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "about", label: "About Me" },
-  { id: "projects", label: "Projects" },
 ];
 
 const socials = [
