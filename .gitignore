@@ -1,1 +1,20 @@
+# dependencies
 node_modules
+
+# next.js build output
+.next
+out
+
+# env files (keys locales, nunca se suben)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# misc
+.DS_Store
+npm-debug.log*
