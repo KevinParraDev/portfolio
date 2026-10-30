@@ -26,8 +26,10 @@ const nextConfig: NextConfig = {
       ...removedProjectSlugs.flatMap((slug) => [
         { source: `/${slug}`, destination: "/#projects", permanent: false },
         { source: `/projects/${slug}`, destination: "/#projects", permanent: false },
+        { source: `/:lang(en|es)/projects/${slug}`, destination: "/:lang#projects", permanent: false },
       ]),
       { source: "/galery", destination: "/gallery", permanent: true },
+      { source: "/:lang(en|es)/galery", destination: "/:lang/gallery", permanent: true },
     ];
   },
 };

@@ -4,8 +4,11 @@ import Image from "next/image";
 import { useState } from "react";
 import VideoEmbed from "./VideoEmbed";
 import type { Media } from "@/data/projects";
+import { fmt, type Dictionary } from "@/i18n/dictionaries";
 
-export default function ProjectMedia({ media, title }: { media: Media[]; title: string }) {
+type Props = { media: Media[]; title: string; t: Dictionary["project"] };
+
+export default function ProjectMedia({ media, title, t }: Props) {
   const [active, setActive] = useState(0);
   const current = media[active];
 
@@ -13,12 +16,12 @@ export default function ProjectMedia({ media, title }: { media: Media[]; title: 
     <div>
       {current.type === "video" ? (
         <div className="video">
-          <VideoEmbed video={current.video} title={`${title} trailer`} />
+          <VideoEmbed video={current.video} title={`${title} ${t.trailer}`} />
         </div>
       ) : (
         <Image
           src={current.src}
-          alt={`${title} screenshot ${active}`}
+          alt={fmt(t.screenshot, { title, n: active })}
           quality={100}
           className="image-project"
           sizes="(max-width: 800px) 100vw, 50vw"
@@ -33,7 +36,7 @@ export default function ProjectMedia({ media, title }: { media: Media[]; title: 
               type="button"
               className="screenshot-button"
               onClick={() => setActive(i)}
-              aria-label={item.type === "video" ? "Show trailer" : `Show screenshot ${i}`}
+              aria-label={item.type === "video" ? t.showTrailer : fmt(t.showScreenshot, { n: i })}
               aria-pressed={active === i}
             >
               <Image

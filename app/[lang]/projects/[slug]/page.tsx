@@ -5,26 +5,34 @@ import CoverPlaceholder from "@/components/CoverPlaceholder";
 import ProjectMedia from "@/components/ProjectMedia";
 import VideoEmbed from "@/components/VideoEmbed";
 import { categoryLabels, getProject, playStore, projects, statusLabel } from "@/data/projects";
+import { locales, tr, type Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = PageProps<"/[lang]/projects/[slug]">;
 
 export function generateStaticParams() {
-  return projects.map(({ slug }) => ({ slug }));
+  return locales.flatMap((lang) => projects.map(({ slug }) => ({ lang, slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const project = getProject((await params).slug);
+  const { lang, slug } = await params;
+  const project = getProject(slug);
   if (!project) return {};
   return {
     title: project.title,
-    description: project.description[0],
+    description: project.description[lang as Locale][0],
+    alternates: { languages: { en: `/en/projects/${slug}`, es: `/es/projects/${slug}` } },
     openGraph: project.cover ? { images: [project.cover.src] } : undefined,
   };
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const project = getProject((await params).slug);
+  const { lang: rawLang, slug } = await params;
+  const lang = rawLang as Locale;
+  const project = getProject(slug);
   if (!project) notFound();
+  const dict = getDictionary(lang);
+  const t = dict.project;
 
   const { title, genre, category, video, media, links, description, roles } = project;
   const { studio, players, platforms, tools, context, duration, credits } = project;
@@ -34,10 +42,10 @@ export default async function ProjectPage({ params }: Props) {
   const next = projects[(index + 1) % projects.length];
 
   const facts: { label: string; value: React.ReactNode }[] = [
-    { label: "Status", value: statusLabel(project) },
-    { label: "Type", value: `${categoryLabels[category]} · ${genre}` },
+    { label: t.facts.status, value: statusLabel(project, lang) },
+    { label: t.facts.type, value: `${categoryLabels[category][lang]} · ${tr(genre, lang)}` },
     {
-      label: "Studio",
+      label: t.facts.studio,
       value: studio?.url ? (
         <a href={studio.url} target="_blank" rel="noopener noreferrer" className="fact-link">
           {studio.name}
@@ -46,21 +54,21 @@ export default async function ProjectPage({ params }: Props) {
         studio?.name
       ),
     },
-    { label: "Made for", value: context },
-    { label: "Players", value: players },
-    { label: "Dev time", value: duration },
-    { label: "Platforms", value: platforms?.join(", ") },
-    { label: "Tools", value: tools?.join(", ") },
-    { label: "Credits", value: credits?.join(", ") },
+    { label: t.facts.madeFor, value: context && tr(context, lang) },
+    { label: t.facts.players, value: players && tr(players, lang) },
+    { label: t.facts.devTime, value: duration && tr(duration, lang) },
+    { label: t.facts.platforms, value: platforms?.map((p) => tr(p, lang)).join(", ") },
+    { label: t.facts.tools, value: tools?.join(", ") },
+    { label: t.facts.credits, value: credits?.map((c) => tr(c, lang)).join(", ") },
   ].filter((fact) => Boolean(fact.value));
 
   return (
     <div className="game">
-      <Link href="/#projects" className="back-link">
-        ← All projects
+      <Link href={`/${lang}#projects`} className="back-link">
+        {t.back}
       </Link>
       <h1>{title}</h1>
-      <h2>{genre}</h2>
+      <h2>{tr(genre, lang)}</h2>
       <div className="game-box">
         {video ? (
           <div>
@@ -69,10 +77,10 @@ export default async function ProjectPage({ params }: Props) {
             </div>
           </div>
         ) : media.length > 0 ? (
-          <ProjectMedia media={media} title={title} />
+          <ProjectMedia media={media} title={title} t={t} />
         ) : (
           <div>
-            <CoverPlaceholder title={title} />
+            <CoverPlaceholder title={title} note={dict.projects.comingSoon} />
           </div>
         )}
         <div>
@@ -80,8 +88,10 @@ export default async function ProjectPage({ params }: Props) {
             <div className="project-buttons">
               {links.play && (
                 <a className="play-button play-button-primary" href={links.play} target="_blank" rel="noopener noreferrer">
-                  ▶ PLAY
-                  <span className="play-button-store">on {playStore(links.play)}</span>
+                  {t.play}
+                  <span className="play-button-store">
+                    {t.on} {playStore(links.play)}
+                  </span>
                 </a>
               )}
               {links.alsoOn?.map((url) => (
@@ -97,7 +107,7 @@ export default async function ProjectPage({ params }: Props) {
             </div>
           )}
 
-          <dl className="project-facts">
+          <dl className="project-facts" data-reveal>
             {facts.map(({ label, value }) => (
               <div key={label}>
                 <dt>{label}</dt>
@@ -106,22 +116,22 @@ export default async function ProjectPage({ params }: Props) {
             ))}
           </dl>
 
-          <h2>Description</h2>
-          {description.map((paragraph) => (
+          <h2>{t.description}</h2>
+          {description[lang].map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-          <h2>My role</h2>
+          <h2>{t.role}</h2>
           <ul className="bullet-list">
-            {roles.map((role) => (
-              <li key={role}>{role}</li>
+            {roles.map((r) => (
+              <li key={tr(r, "en")}>{tr(r, lang)}</li>
             ))}
           </ul>
         </div>
       </div>
 
-      <nav className="project-pager" aria-label="More projects">
-        <Link href={`/projects/${prev.slug}`}>← {prev.title}</Link>
-        <Link href={`/projects/${next.slug}`}>{next.title} →</Link>
+      <nav className="project-pager" aria-label={t.more} data-reveal>
+        <Link href={`/${lang}/projects/${prev.slug}`}>← {prev.title}</Link>
+        <Link href={`/${lang}/projects/${next.slug}`}>{next.title} →</Link>
       </nav>
     </div>
   );

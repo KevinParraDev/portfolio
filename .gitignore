@@ -18,3 +18,6 @@ out
 # misc
 .DS_Store
 npm-debug.log*
+
+# capturas originales en alta resolución (el sitio usa las versiones .webp optimizadas)
+public/img/projects/*/

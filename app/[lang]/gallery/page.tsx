@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image, { type StaticImageData } from "next/image";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import kio1 from "@/public/img/galery/kio (1).gif";
 import kio2 from "@/public/img/galery/kio (2).gif";
 import kio3 from "@/public/img/galery/kio (3).gif";
@@ -25,25 +27,26 @@ import extra2 from "@/public/img/galery/extra2.png";
 import extra3 from "@/public/img/galery/extra3.png";
 import extra4 from "@/public/img/galery/extra4.png";
 
-export const metadata: Metadata = {
-  title: "Gallery",
-  description: "Characters, animations and environments by Kevin Parra.",
-};
+export async function generateMetadata({ params }: PageProps<"/[lang]/gallery">): Promise<Metadata> {
+  const t = getDictionary((await params).lang as Locale).gallery;
+  return { title: t.title, description: t.description };
+}
 
 type Item = { src: StaticImageData; size: "s" | "m" };
 
+// "from" es el juego de donde sale el personaje.
 const characters: { name?: string; from: string; items: Item[] }[] = [
-  { name: "Juan", from: "From: Knock It Out: The Show", items: [kio2, kio1, kio3].map((src) => ({ src, size: "m" })) },
-  { name: "Zeri", from: "From: Zeri's Adventure", items: [za1, za2, za3].map((src) => ({ src, size: "m" })) },
+  { name: "Juan", from: "Knock It Out: The Show", items: [kio2, kio1, kio3].map((src) => ({ src, size: "m" })) },
+  { name: "Zeri", from: "Zeri's Adventure", items: [za1, za2, za3].map((src) => ({ src, size: "m" })) },
   {
-    from: "From: Grecko vs Machine",
+    from: "Grecko vs Machine",
     items: [
       { src: gvm1, size: "m" },
       { src: gvm2, size: "s" },
       { src: gvm3, size: "m" },
     ],
   },
-  { from: "From: Grecko vs Machine", items: [ht1, ht2, ht3, ht4].map((src) => ({ src, size: "s" })) },
+  { from: "Grecko vs Machine", items: [ht1, ht2, ht3, ht4].map((src) => ({ src, size: "s" })) },
 ];
 
 const environments = [
@@ -55,14 +58,18 @@ const environments = [
 const extras = [extra1, extra2, extra3, extra4];
 
 // GIFs se sirven sin optimizar para que conserven la animación.
-export default function GalleryPage() {
+export default async function GalleryPage({ params }: PageProps<"/[lang]/gallery">) {
+  const t = getDictionary((await params).lang as Locale).gallery;
+
   return (
     <div className="game">
-      <h1>Characters</h1>
+      <h1>{t.characters}</h1>
       {characters.map(({ name, from, items }, i) => (
-        <section key={i}>
+        <section key={i} data-reveal>
           {name && <h2>{name}</h2>}
-          <h3>{from}</h3>
+          <h3>
+            {t.from} {from}
+          </h3>
           <div>
             {items.map(({ src, size }, j) => (
               <Image key={j} src={src} alt={`${name ?? from} animation ${j + 1}`} unoptimized className={`image-box-galery-${size}`} />
@@ -70,21 +77,21 @@ export default function GalleryPage() {
           </div>
         </section>
       ))}
-      <h3>Bull from Zeri&apos;s Adventure</h3>
+      <h3>{t.bull}</h3>
       <div className="bull-container">
         <Image src={bull} alt="Bull running animation" unoptimized className="image-box-galery-toro" />
       </div>
 
-      <h1>Environments</h1>
+      <h1>{t.environments}</h1>
       {environments.map((row, i) => (
-        <div key={i} className="env-containter">
+        <div key={i} className="env-containter" data-reveal>
           {row.map((src, j) => (
             <Image key={j} src={src} alt={`Environment ${i * 2 + j + 1}`} quality={100} className="image-galery-env" sizes="(max-width: 800px) 100vw, 50vw" />
           ))}
         </div>
       ))}
 
-      <h1>Extra</h1>
+      <h1>{t.extra}</h1>
       {extras.map((src, i) => (
         <Image key={i} src={src} alt={`Extra artwork ${i + 1}`} quality={100} className="image-galery-env" sizes="(max-width: 800px) 100vw, 50vw" />
       ))}
