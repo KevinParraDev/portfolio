@@ -3,12 +3,13 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { TILE, artworks, museumMap, mural, npcs, player as playerSprites, spawn, type Artwork } from "@/data/museum";
+import { TILE, artworks, demoRoute, museumMap, mural, npcs, player as playerSprites, spawn, type Artwork } from "@/data/museum";
 import { sprites, type SpriteName } from "@/data/museumSprites";
 import { getProject } from "@/data/projects";
 import { tr, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { drawArtwork, drawMap, drawMuralFrame, isSolidTile } from "./tiles";
+import { prefersReducedMotion } from "../effects/motion";
 
 // Pantalla interna: 20×12 casillas en computador; en celular 10×9, como la Game Boy original (160×144 px).
 const DESKTOP_VIEW = { w: 20 * TILE, h: 12 * TILE };
@@ -27,7 +28,8 @@ const DELTA: Record<Dir, [number, number]> = { up: [0, -1], down: [0, 1], left: 
 type Choice = { label: string; run: () => void };
 type Dialog = { speaker?: string; pages: string[]; page: number; chars: number; choices?: Choice[]; choice: number };
 
-type Props = { lang: Locale; t: Dictionary["museum"] };
+/** demo: vista previa sin controles, en la que el personaje recorre el museo solo (inicio y arcade). */
+type Props = { lang: Locale; t: Dictionary["museum"]; demo?: boolean };
 
 // Las obras se pintan chiquitas en la pared: se pide una versión reducida al optimizador de imágenes de Next.
 const thumbUrl = (src: string) => `/_next/image?url=${encodeURIComponent(src)}&w=128&q=75`;
@@ -40,7 +42,39 @@ const loadImage = (src: string) =>
     img.src = src;
   });
 
-export default function Museum({ lang, t }: Props) {
+const walkable = (x: number, y: number) =>
+  y >= 0 && y < museumMap.length && x >= 0 && x < museumMap[0].length && !isSolidTile(x, y) && !npcs.some((n) => n.x === x && n.y === y);
+
+/** Camino más corto entre dos casillas (búsqueda en anchura), como lista de pasos. Lo usa el modo demo. */
+function findPath(fromX: number, fromY: number, toX: number, toY: number): Dir[] {
+  const key = (x: number, y: number) => y * museumMap[0].length + x;
+  const prev = new Map<number, { k: number; dir: Dir }>();
+  const queue: [number, number][] = [[fromX, fromY]];
+  const seen = new Set([key(fromX, fromY)]);
+  while (queue.length) {
+    const [x, y] = queue.shift()!;
+    if (x === toX && y === toY) break;
+    for (const dir of Object.keys(DELTA) as Dir[]) {
+      const [dx, dy] = DELTA[dir];
+      const nx = x + dx;
+      const ny = y + dy;
+      if (!walkable(nx, ny) || seen.has(key(nx, ny))) continue;
+      seen.add(key(nx, ny));
+      prev.set(key(nx, ny), { k: key(x, y), dir });
+      queue.push([nx, ny]);
+    }
+  }
+  const path: Dir[] = [];
+  let k = key(toX, toY);
+  while (prev.has(k)) {
+    const step = prev.get(k)!;
+    path.unshift(step.dir);
+    k = step.k;
+  }
+  return path;
+}
+
+export default function Museum({ lang, t, demo = false }: Props) {
   const router = useRouter();
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -69,6 +103,8 @@ export default function Museum({ lang, t }: Props) {
     /** Último toque de dirección, aunque ya se haya soltado (para que un toque rápido dé un paso). */
     tapped: null as Dir | null,
   });
+  // Recorrido automático del modo demo.
+  const auto = useRef({ wp: 0, path: [] as Dir[], waitUntil: 0 });
   const blocked = useRef(false);
   // Mientras hay un diálogo o el visor abierto, el personaje no camina.
   useEffect(() => {
@@ -122,9 +158,6 @@ export default function Museum({ lang, t }: Props) {
 
   const npcAt = (x: number, y: number) =>
     npcs.find((n) => (n.x === x && n.y === y) || n.talkFrom?.some((p) => p.x === x && p.y === y));
-
-  const walkable = (x: number, y: number) =>
-    y >= 0 && y < museumMap.length && x >= 0 && x < museumMap[0].length && !isSolidTile(x, y) && !npcs.some((n) => n.x === x && n.y === y);
 
   const projectChoice = (slug?: string): Choice[] => {
     const project = slug ? getProject(slug) : undefined;
@@ -258,9 +291,10 @@ export default function Museum({ lang, t }: Props) {
         g.py = (g.from[1] + (g.y - g.from[1]) * p) * TILE;
         if (p === 1) {
           g.moving = false;
-          onStep(g.x, g.y);
+          if (!demo) onStep(g.x, g.y);
         }
       }
+      if (demo) return autopilot(now);
       if (!g.moving && !blocked.current) {
         const dir = g.held[g.held.length - 1] ?? g.tapped;
         g.tapped = null;
@@ -276,6 +310,39 @@ export default function Museum({ lang, t }: Props) {
           }
         }
       }
+    }
+
+    // Modo demo: va al siguiente punto de la ruta, mira un rato y sigue.
+    function autopilot(now: number) {
+      const g = game.current;
+      const a = auto.current;
+      if (g.moving || now < a.waitUntil || prefersReducedMotion()) return;
+      if (!a.path.length) {
+        const target = demoRoute[a.wp];
+        if (g.x === target.x && g.y === target.y) {
+          g.dir = target.face;
+          a.waitUntil = now + target.wait;
+          a.wp = (a.wp + 1) % demoRoute.length;
+          return;
+        }
+        a.path = findPath(g.x, g.y, target.x, target.y);
+        if (!a.path.length) {
+          a.wp = (a.wp + 1) % demoRoute.length;
+          return;
+        }
+      }
+      const dir = a.path.shift()!;
+      const [dx, dy] = DELTA[dir];
+      g.dir = dir;
+      if (!walkable(g.x + dx, g.y + dy)) {
+        a.path = [];
+        return;
+      }
+      g.from = [g.x, g.y];
+      g.x += dx;
+      g.y += dy;
+      g.moving = true;
+      g.start = now;
     }
 
     function render(now: number) {
@@ -317,8 +384,12 @@ export default function Museum({ lang, t }: Props) {
     }
 
     function loop(now: number) {
+      frame = requestAnimationFrame(loop);
+      // El demo no gasta nada mientras no se ve en pantalla.
+      if (demo && !visible) return;
       update(now);
       render(now);
+      if (demo) return;
       const g = game.current;
       const found = !g.moving && !blocked.current ? nearby() : null;
       const next = found ? (found.target.kind === "npc" ? "talk" : "look") : null;
@@ -326,12 +397,30 @@ export default function Museum({ lang, t }: Props) {
         promptRef.current = next;
         setPrompt(next);
       }
-      frame = requestAnimationFrame(loop);
     }
 
-    load();
+    // El demo carga sus imágenes solo cuando se acerca a la pantalla.
+    let visible = !demo;
+    let io: IntersectionObserver | undefined;
+    if (demo) {
+      let started = false;
+      io = new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          if (visible && !started) {
+            started = true;
+            load();
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      io.observe(canvas);
+    } else {
+      load();
+    }
     return () => {
       cancelled = true;
+      io?.disconnect();
       cancelAnimationFrame(frame);
     };
     // El bucle se arma una sola vez; lo que cambia (diálogos) se lee desde refs.
@@ -345,7 +434,13 @@ export default function Museum({ lang, t }: Props) {
       setTouch(window.matchMedia("(pointer: coarse)").matches);
       const handheld = window.matchMedia(HANDHELD_QUERY).matches;
       let next;
-      if (handheld) {
+      if (demo) {
+        // Vista previa: escala entera (×2 o más) y tantas casillas como quepan a lo ancho.
+        const avail = wrap.clientWidth;
+        const s = Math.max(2, Math.floor(avail / DESKTOP_VIEW.w));
+        const cols = Math.max(8, Math.min(20, Math.floor(avail / (TILE * s))));
+        next = { w: cols * TILE, h: Math.max(6, Math.round(cols * 0.6)) * TILE, scale: s };
+      } else if (handheld) {
         // Pixeles exactos (×2 o ×3): si no caben 10×9 casillas, se muestran menos (9×8, 8×7) en vez de escalar a medias.
         const avail = wrap.clientWidth;
         const s = avail >= HANDHELD_VIEW.w * 3 ? 3 : 2;
@@ -371,7 +466,7 @@ export default function Museum({ lang, t }: Props) {
       ro.disconnect();
       window.removeEventListener("resize", fit);
     };
-  }, []);
+  }, [demo]);
 
   // ---------- Controles ----------
 
@@ -438,6 +533,18 @@ export default function Museum({ lang, t }: Props) {
     if (viewer || dialog) return;
     say([t.help]);
   };
+
+  // Vista previa: solo la pantalla, sin controles ni diálogos.
+  if (demo) {
+    return (
+      <div className="museum-demo" ref={wrapRef} aria-hidden>
+        <div className="museum-screen" style={{ width: view.w * view.scale, height: view.h * view.scale }}>
+          <canvas ref={canvasRef} width={view.w} height={view.h} className="museum-canvas" />
+          {!ready && <p className="museum-loading">{t.loading}</p>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     // En celular toda esta caja se ve como una Game Boy: pantalla arriba y controles abajo (ver globals.css).

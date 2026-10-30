@@ -3053,6 +3053,149 @@ textarea {
     }
 }
 
+/* ---- Vista previa del museo (inicio y arcade) ---- */
+
+.museum-demo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.museum-demo .museum-screen {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Dentro del cartucho del arcade, la vista previa llena la portada */
+.arcade-cover .museum-demo {
+    height: 100%;
+    align-items: center;
+    overflow: hidden;
+}
+
+.museum-teaser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 60px;
+}
+
+.museum-teaser-window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: min(960px, 100%);
+}
+
+/* El marco va en la pantalla (no en el contenedor) para que se ajuste a lo que se ve */
+.museum-teaser-window .museum-demo .museum-screen {
+    box-sizing: content-box;
+    border: 2px solid var(--neon);
+    border-radius: 8px;
+    box-shadow: var(--glow), var(--glow-inset);
+    transition: box-shadow 200ms, border-color 200ms;
+}
+
+.museum-teaser-window:hover .museum-demo .museum-screen,
+.museum-teaser-window:focus-visible .museum-demo .museum-screen {
+    border-color: var(--neon-gold);
+    box-shadow: var(--glow-gold);
+}
+
+.museum-teaser-cta {
+    padding: 8px 26px;
+    border: 2px solid var(--neon-gold);
+    border-radius: 6px;
+    font-size: 22px;
+    color: var(--neon-gold);
+    text-shadow: 0 0 6px var(--neon-gold);
+    box-shadow: var(--glow-gold);
+    transition: background-color 200ms, color 200ms;
+}
+
+.museum-teaser-window:hover .museum-teaser-cta {
+    background: var(--neon-gold);
+    color: #150408;
+    text-shadow: none;
+}
+
+/* El museo en la lista del arcade, destacado en dorado */
+.arcade-list button.arcade-museum:not(.active) {
+    color: var(--neon-gold);
+}
+
+/* ---- Ticket de entrada al museo ---- */
+
+.museum-ticket {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: min(420px, calc(100vw - 40px));
+    padding: 12px 16px 12px 14px;
+    border: 2px dashed #a3303a;
+    border-radius: 6px;
+    background: #fdf3ea;
+    color: #150408;
+    box-shadow: 0 0 0 4px #fdf3ea, 0 8px 0 4px #0b0305;
+    rotate: -2deg;
+    animation: ticket-in 500ms steps(5);
+}
+
+@keyframes ticket-in {
+    from {
+        opacity: 0;
+        translate: 0 40px;
+    }
+}
+
+.museum-ticket p {
+    flex: 1;
+    font-size: 17px;
+    line-height: 1.2;
+    color: #150408;
+}
+
+.museum-ticket-stub {
+    font-size: 30px;
+    padding-right: 10px;
+    border-right: 2px dashed #a3303a;
+}
+
+.museum-ticket-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.museum-ticket-enter {
+    padding: 4px 12px;
+    border-radius: 4px;
+    background: #a3303a;
+    font-size: 16px;
+    white-space: nowrap;
+    color: #fdf3ea;
+}
+
+.museum-ticket-actions button {
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: #150408;
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .museum-ticket {
+        animation: none;
+    }
+}
+
 .classic-gallery {
     margin-top: 20px;
 }

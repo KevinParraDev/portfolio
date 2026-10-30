@@ -225,5 +225,22 @@ export const npcs: Npc[] = [
   },
 ];
 
+/**
+ * Recorrido del modo demo (la vista previa del inicio y del arcade): el personaje camina solo
+ * de un punto al siguiente, se queda mirando hacia "face" durante "wait" ms y sigue. Se repite en bucle.
+ */
+export const demoRoute: { x: number; y: number; face: "up" | "down" | "left" | "right"; wait: number }[] = [
+  { x: 28, y: 12, face: "up", wait: 200 },
+  { x: 3, y: 6, face: "up", wait: 1600 }, // Zeri
+  { x: 7, y: 6, face: "up", wait: 1200 }, // Grecko
+  { x: 17, y: 3, face: "up", wait: 1800 }, // mural del toro
+  { x: 24, y: 6, face: "up", wait: 1200 }, // hongo
+  { x: 28, y: 6, face: "up", wait: 1200 }, // slime
+  { x: 23, y: 12, face: "up", wait: 1600 }, // cuadro del vestíbulo
+  { x: 11, y: 12, face: "up", wait: 1600 }, // sala de obras
+  { x: 8, y: 18, face: "up", wait: 1600 }, // muro del medio
+  { x: 28, y: 20, face: "up", wait: 900 }, // de vuelta a la entrada
+];
+
 /** Avatar temporal (Juan de Knock It Out) hasta tener el tuyo. */
 export const player = { walk: "juan-walk" as SpriteName, idle: "juan-idle" as SpriteName };
