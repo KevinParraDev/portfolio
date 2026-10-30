@@ -144,20 +144,31 @@ export const playStore = (url: string) => {
 const image = (src: StaticImageData): Media => ({ type: "image", src });
 
 /**
- * Build web de un juego. width/height es el tamaño original con el que se exportó: la máquina arcade
- * carga el juego a ese tamaño y lo escala para que quepa entero en la pantalla.
+ * Build web de un juego.
+ * - width/height: tamaño del lienzo del juego (lo único que se muestra).
+ * - footer: barra de abajo de la plantilla de Unity (logo y botón azul de pantalla completa).
+ * - frame: márgenes que agrega quien aloja el juego alrededor (itch.io pone 1 px de borde y su barra de 20 px abajo).
+ * El arcade carga todo y muestra solo el lienzo, escalado para que quepa entero en la pantalla.
  */
-export type WebBuild = { url: string; width: number; height: number };
+export type WebBuild = {
+  url: string;
+  width: number;
+  height: number;
+  footer: number;
+  frame: { left: number; top: number; right: number; bottom: number };
+};
 
 /**
- * Embed oficial de itch.io para juegos HTML5. El número es el "upload id" del build web
- * (sale en el código de la página del juego en itch: html-classic.itch.zone/html/<ID>/...).
- * Por defecto, el lienzo de Unity (960×600) más la barra inferior de la plantilla.
+ * Juego HTML5 subido a itch.io, con su embed oficial (itch no deja cargar el build directo desde otra web).
+ * El número es el "upload id" del build web: sale en el código de la página del juego en itch
+ * (html-classic.itch.zone/html/<ID>/...). Por defecto, la plantilla de Unity: lienzo de 960×600 y barra de 38 px.
  */
-const itchEmbed = (uploadId: number, width = 960, height = 640): WebBuild => ({
+const itchBuild = (uploadId: number, width = 960, height = 600, footer = 38): WebBuild => ({
   url: `https://itch.io/embed-upload/${uploadId}?color=000000`,
   width,
   height,
+  footer,
+  frame: { left: 1, top: 1, right: 1, bottom: 20 },
 });
 
 const indieLevel = { name: "Indie Level Studio", url: "https://indielevelstudio.com/es/" };
@@ -369,7 +380,7 @@ export const projects: Project[] = [
     title: "Zeri's Adventure",
     category: "game",
     section: "arcade",
-    webBuild: itchEmbed(8175534),
+    webBuild: itchBuild(8175534),
     genre: { en: "2D Metroidvania Game", es: "Metroidvania 2D" },
     status: "released",
     year: 2023,
@@ -437,7 +448,7 @@ export const projects: Project[] = [
     title: "Knock It Out: The Show",
     category: "game",
     section: "arcade",
-    webBuild: itchEmbed(9604224),
+    webBuild: itchBuild(9604224),
     genre: { en: "2D Platformer Game", es: "Plataformero 2D" },
     status: "released",
     year: 2024,
@@ -517,7 +528,7 @@ export const projects: Project[] = [
     title: "Domino",
     category: "game",
     section: "arcade",
-    webBuild: itchEmbed(8200095),
+    webBuild: itchBuild(8200095),
     genre: { en: "Board Game", es: "Juego de mesa" },
     status: "released",
     year: 2022,

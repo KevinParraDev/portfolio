@@ -10,9 +10,11 @@ import { tr, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { drawArtwork, drawMap, drawMuralFrame, isSolidTile } from "./tiles";
 
-// Pantalla interna de 20×12 casillas (320×192 px), escalada a pixeles enteros.
-const VIEW_W = 20 * TILE;
-const VIEW_H = 12 * TILE;
+// Pantalla interna: 20×12 casillas en computador; en celular 10×9, como la Game Boy original (160×144 px).
+const DESKTOP_VIEW = { w: 20 * TILE, h: 12 * TILE };
+const HANDHELD_VIEW = { w: 10 * TILE, h: 9 * TILE };
+/** Debe coincidir con el media query de la carcasa Game Boy en globals.css. */
+const HANDHELD_QUERY = "(max-width: 800px)";
 const MAP_W = museumMap[0].length * TILE;
 const MAP_H = museumMap.length * TILE;
 const STEP_MS = 200; // tiempo para caminar una casilla
@@ -44,9 +46,14 @@ export default function Museum({ lang, t }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [scale, setScale] = useState(2);
+  const [view, setView] = useState({ ...DESKTOP_VIEW, scale: 2 });
+  const viewRef = useRef(view);
   const [dialog, setDialog] = useState<Dialog | null>(null);
   const [viewer, setViewer] = useState<Artwork | null>(null);
+  // Aviso "Presiona A / Enter" cuando hay algo interactuable al lado.
+  const [prompt, setPrompt] = useState<"talk" | "look" | null>(null);
+  const promptRef = useRef(prompt);
+  const [touch, setTouch] = useState(false);
 
   // Estado del juego en refs: cambia 60 veces por segundo y no necesita re-render de React.
   const game = useRef({
@@ -125,16 +132,40 @@ export default function Museum({ lang, t }: Props) {
     return [{ label: `${t.goToProject}: ${project.title}`, run: () => router.push(`/${lang}/projects/${slug}`) }];
   };
 
-  // Presionar A frente a algo: un NPC, un cuadro o el mural.
+  // Qué hay en una casilla: un NPC, un cuadro o el mural.
+  type Target = { kind: "npc"; npc: (typeof npcs)[number] } | { kind: "art"; art: Artwork } | { kind: "mural" };
+  function targetAt(tx: number, ty: number): Target | null {
+    const npc = npcAt(tx, ty);
+    if (npc) return { kind: "npc", npc };
+    const art = artworks.find((a) => tx >= a.x && tx < a.x + a.w && ty >= a.y && ty < a.y + a.h);
+    if (art) return { kind: "art", art };
+    if (tx >= mural.x && tx < mural.x + mural.w && ty >= mural.y && ty < mural.y + mural.h) return { kind: "mural" };
+    return null;
+  }
+
+  // Algo interactuable al lado del jugador: primero lo que tiene en frente, luego los otros lados.
+  function nearby() {
+    const g = game.current;
+    const dirs: Dir[] = [g.dir, ...(["up", "down", "left", "right"] as Dir[]).filter((d) => d !== g.dir)];
+    for (const dir of dirs) {
+      const [dx, dy] = DELTA[dir];
+      const target = targetAt(g.x + dx, g.y + dy);
+      if (target) return { target, dir };
+    }
+    return null;
+  }
+
+  // Presionar A al lado de algo: el personaje se voltea hacia eso y habla o mira.
   function interact() {
     const g = game.current;
     if (g.moving) return;
-    const [dx, dy] = DELTA[g.dir];
-    const tx = g.x + dx;
-    const ty = g.y + dy;
+    const found = nearby();
+    if (!found) return;
+    g.dir = found.dir;
+    const target = found.target;
 
-    const npc = npcAt(tx, ty);
-    if (npc) {
+    if (target.kind === "npc") {
+      const npc = target.npc;
       const name = tr(npc.name, lang);
       const choices = projectChoice(npc.project);
       return say(
@@ -144,20 +175,18 @@ export default function Museum({ lang, t }: Props) {
       );
     }
 
-    const art = artworks.find((a) => tx >= a.x && tx < a.x + a.w && ty >= a.y && ty < a.y + a.h);
-    if (art) {
+    if (target.kind === "art") {
+      const art = target.art;
       return say([`${tr(art.title, lang)} — ${t.by}`, tr(art.description, lang)], undefined, [
         { label: t.viewArtwork, run: () => setViewer(art) },
         { label: t.bye, run: () => {} },
       ]);
     }
 
-    if (tx >= mural.x && tx < mural.x + mural.w && ty >= mural.y && ty < mural.y + mural.h) {
-      return say([tr(mural.title, lang), tr(mural.text, lang)], undefined, [
-        ...projectChoice(mural.project),
-        { label: t.bye, run: () => {} },
-      ]);
-    }
+    return say([tr(mural.title, lang), tr(mural.text, lang)], undefined, [
+      ...projectChoice(mural.project),
+      { label: t.bye, run: () => {} },
+    ]);
   }
 
   // Al pisar la puerta de salida.
@@ -251,10 +280,11 @@ export default function Museum({ lang, t }: Props) {
 
     function render(now: number) {
       const g = game.current;
-      const camX = Math.round(Math.min(Math.max(g.px + TILE / 2 - VIEW_W / 2, 0), MAP_W - VIEW_W));
-      const camY = Math.round(Math.min(Math.max(g.py + TILE / 2 - VIEW_H / 2, 0), MAP_H - VIEW_H));
+      const { w: viewW, h: viewH } = viewRef.current;
+      const camX = Math.round(Math.min(Math.max(g.px + TILE / 2 - viewW / 2, 0), MAP_W - viewW));
+      const camY = Math.round(Math.min(Math.max(g.py + TILE / 2 - viewH / 2, 0), MAP_H - viewH));
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(layer, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
+      ctx.drawImage(layer, camX, camY, viewW, viewH, 0, 0, viewW, viewH);
 
       // Mural animado (el toro corriendo)
       const bull = sprites[mural.sprite];
@@ -289,6 +319,13 @@ export default function Museum({ lang, t }: Props) {
     function loop(now: number) {
       update(now);
       render(now);
+      const g = game.current;
+      const found = !g.moving && !blocked.current ? nearby() : null;
+      const next = found ? (found.target.kind === "npc" ? "talk" : "look") : null;
+      if (next !== promptRef.current) {
+        promptRef.current = next;
+        setPrompt(next);
+      }
       frame = requestAnimationFrame(loop);
     }
 
@@ -301,14 +338,30 @@ export default function Museum({ lang, t }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Escala entera según el ancho disponible (y sin pasarse del alto de la pantalla).
+  // Tamaño de la vista y escala entera según el espacio disponible (sin pasarse del alto de la pantalla).
   useEffect(() => {
     const wrap = wrapRef.current!;
     const fit = () => {
-      const byWidth = wrap.clientWidth / VIEW_W;
-      const byHeight = (window.innerHeight * 0.72) / VIEW_H;
-      const s = Math.min(byWidth, byHeight);
-      setScale(s >= 2 ? Math.floor(s) : s);
+      setTouch(window.matchMedia("(pointer: coarse)").matches);
+      const handheld = window.matchMedia(HANDHELD_QUERY).matches;
+      let next;
+      if (handheld) {
+        // Pixeles exactos (×2 o ×3): si no caben 10×9 casillas, se muestran menos (9×8, 8×7) en vez de escalar a medias.
+        const avail = wrap.clientWidth;
+        const s = avail >= HANDHELD_VIEW.w * 3 ? 3 : 2;
+        const cols = Math.min(10, Math.floor(avail / (TILE * s)));
+        next =
+          cols >= 8
+            ? { w: cols * TILE, h: (cols - 1) * TILE, scale: s }
+            : { ...HANDHELD_VIEW, scale: avail / HANDHELD_VIEW.w };
+      } else {
+        const byWidth = wrap.clientWidth / DESKTOP_VIEW.w;
+        const byHeight = (window.innerHeight * 0.72) / DESKTOP_VIEW.h;
+        const s = Math.min(byWidth, byHeight);
+        next = { ...DESKTOP_VIEW, scale: s >= 2 ? Math.floor(s) : s };
+      }
+      viewRef.current = next;
+      setView(next);
     };
     fit();
     const ro = new ResizeObserver(fit);
@@ -373,8 +426,27 @@ export default function Museum({ lang, t }: Props) {
   const dialogDone = dialog ? dialog.chars >= dialog.pages[dialog.page].length : false;
   const lastPage = dialog ? dialog.page === dialog.pages.length - 1 : false;
 
+  // START: salir del museo · SELECT: ver la ayuda de controles (solo en la carcasa de celular).
+  const pressStart = () => {
+    if (viewer || dialog) return;
+    say([t.leave], undefined, [
+      { label: t.yes, run: () => router.push(`/${lang}`) },
+      { label: t.no, run: () => {} },
+    ]);
+  };
+  const pressSelect = () => {
+    if (viewer || dialog) return;
+    say([t.help]);
+  };
+
   return (
-    <div className="museum">
+    // En celular toda esta caja se ve como una Game Boy: pantalla arriba y controles abajo (ver globals.css).
+    <div className="museum gameboy">
+      <div className="gb-bezel">
+        <span className="gb-bezel-label" aria-hidden>
+          {t.bezel}
+        </span>
+        <span className="gb-led" aria-hidden />
       <div
         ref={wrapRef}
         className="museum-frame"
@@ -389,8 +461,8 @@ export default function Museum({ lang, t }: Props) {
         role="application"
         aria-label={`${t.title}. ${t.keys}`}
       >
-        <div className="museum-screen" style={{ width: VIEW_W * scale, height: VIEW_H * scale }}>
-          <canvas ref={canvasRef} width={VIEW_W} height={VIEW_H} className="museum-canvas" />
+        <div className="museum-screen" style={{ width: view.w * view.scale, height: view.h * view.scale }}>
+          <canvas ref={canvasRef} width={view.w} height={view.h} className="museum-canvas" />
 
           {!ready && <p className="museum-loading">{t.loading}</p>}
 
@@ -398,6 +470,12 @@ export default function Museum({ lang, t }: Props) {
             <button type="button" className="museum-start" onClick={() => wrapRef.current?.focus()}>
               {t.clickToPlay}
             </button>
+          )}
+
+          {prompt && !dialog && ready && (
+            <p className="museum-prompt" aria-live="polite">
+              {t.press} <kbd>{touch ? "A" : "Enter"}</kbd> · {prompt === "talk" ? t.talk : t.look}
+            </p>
           )}
 
           {dialog && (
@@ -432,6 +510,11 @@ export default function Museum({ lang, t }: Props) {
           )}
         </div>
       </div>
+      </div>
+
+      <p className="gb-brand" aria-hidden>
+        KP<span>·</span>BOY
+      </p>
 
       {/* Controles en pantalla para celulares */}
       <div className="museum-pad" aria-hidden>
@@ -446,6 +529,18 @@ export default function Museum({ lang, t }: Props) {
           <button type="button" className="a" onPointerDown={(e) => { e.preventDefault(); pressA(); }}>A</button>
         </div>
       </div>
+
+      <div className="gb-startselect" aria-hidden>
+        <button type="button" onPointerDown={(e) => { e.preventDefault(); pressSelect(); }}>
+          <span />
+          SELECT
+        </button>
+        <button type="button" onPointerDown={(e) => { e.preventDefault(); pressStart(); }}>
+          <span />
+          START
+        </button>
+      </div>
+      <span className="gb-speaker" aria-hidden />
 
       <p className="museum-keys">{t.keys}</p>
 

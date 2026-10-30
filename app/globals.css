@@ -1603,13 +1603,48 @@ textarea {
     inset: 0;
 }
 
-.game-iframe {
+/* Ventana del tamaño exacto del lienzo, centrada: recorta la barra de botones de la plantilla de Unity */
+.game-crop {
     position: absolute;
     left: 50%;
     top: 50%;
+    translate: -50% -50%;
+    overflow: hidden;
+}
+
+.game-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     border: 0;
     background: #000;
-    transform-origin: center;
+    transform-origin: 0 0;
+}
+
+/* Respaldo de pantalla completa (iPhone): el juego cubre toda la ventana */
+.game-stage.pseudo-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 10005;
+}
+
+.game-exit-fullscreen {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    padding: 4px 12px;
+    border: 2px solid var(--neon);
+    border-radius: 6px;
+    background: #150408cc;
+    font-size: 15px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 200ms;
+}
+
+.game-exit-fullscreen:hover {
+    opacity: 1;
 }
 
 .arcade-game-bar {
@@ -1639,6 +1674,12 @@ textarea {
     padding: 1px 10px;
     font-size: 14px;
     cursor: pointer;
+}
+
+.arcade-host {
+    font-size: 13px;
+    color: var(--neon-pink);
+    text-decoration: underline;
 }
 
 .arcade-game-bar button:hover {
@@ -2538,6 +2579,59 @@ textarea {
     animation: dim-blink 1.4s steps(1) infinite;
 }
 
+/* Aviso "Presiona Enter / A" cuando hay algo interactuable al lado */
+.museum-prompt {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    translate: -50% 0;
+    border: 2px solid #150408;
+    border-radius: 6px;
+    background: #fdf3ea;
+    box-shadow: inset 0 0 0 2px var(--neon-pink), 0 3px 0 #0b0305;
+    font-size: clamp(12px, 1.6vw, 17px);
+    white-space: nowrap;
+    color: #150408;
+    pointer-events: none;
+    animation: prompt-in 200ms steps(3), prompt-float 2.4s ease-in-out 200ms infinite;
+}
+
+/* Flota unos pixeles arriba y abajo; el -50% en x lo mantiene centrado */
+@keyframes prompt-float {
+    0%, 100% {
+        translate: -50% 0;
+    }
+    50% {
+        translate: -50% -3px;
+    }
+}
+
+.museum-prompt kbd {
+    padding: 0 6px;
+    border-radius: 4px;
+    background: #a3303a;
+    font: inherit;
+    font-weight: 700;
+    color: #fdf3ea;
+}
+
+@keyframes prompt-in {
+    from {
+        opacity: 0;
+        translate: -50% 6px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .museum-prompt {
+        animation: none;
+    }
+}
+
 /* Cuadro de diálogo estilo Pokémon */
 .museum-dialog {
     position: absolute;
@@ -2742,6 +2836,221 @@ textarea {
     color: var(--neon-gold);
     box-shadow: var(--glow-gold);
     translate: 0 -16px;
+}
+
+/* ---- Carcasa Game Boy (solo en pantallas angostas) ---- */
+
+/* En computador la carcasa no existe: el bisel no agrega caja y las piezas decorativas se ocultan */
+.gb-bezel {
+    display: contents;
+}
+
+.gb-bezel-label,
+.gb-led,
+.gb-brand,
+.gb-startselect,
+.gb-speaker {
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .gallery-page {
+        padding-inline: 8px;
+    }
+
+    .museum.gameboy {
+        gap: 0;
+        width: min(420px, 100%);
+        margin: 0 auto 40px;
+        padding: 14px 12px 22px;
+        border-radius: 14px 14px 64px 14px;
+        background: linear-gradient(160deg, #f3d3cc, #e2aaa3);
+        box-shadow:
+            inset -5px -7px 0 #c98a83,
+            inset 4px 4px 0 #fbe6e1,
+            0 10px 0 #0b0305;
+    }
+
+    /* Bisel oscuro alrededor de la pantalla */
+    .gb-bezel {
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 22px 12px 16px 24px;
+        border-radius: 10px 10px 36px 10px;
+        background: #3a1520;
+        box-shadow: inset 0 0 0 2px #2a0d14;
+    }
+
+    .gb-bezel-label {
+        position: absolute;
+        top: 6px;
+        left: 0;
+        right: 0;
+        display: block;
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-align: center;
+        color: #f09a97;
+    }
+
+    .gb-led {
+        position: absolute;
+        top: 46%;
+        left: 8px;
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ff5a6e;
+        box-shadow: 0 0 8px #ff5a6e;
+    }
+
+    .museum.gameboy .museum-screen {
+        border: none;
+        border-radius: 2px;
+        box-shadow: none;
+    }
+
+    .gb-brand {
+        display: block;
+        align-self: flex-start;
+        margin: 10px 0 18px 4px;
+        font-size: 22px;
+        font-weight: 700;
+        font-style: italic;
+        letter-spacing: 1px;
+        color: #3a1520;
+    }
+
+    .gb-brand span {
+        color: #a3303a;
+    }
+
+    /* Cruceta y botones A/B como en la consola */
+    .museum.gameboy .museum-pad {
+        display: flex;
+        width: 100%;
+        padding: 0 4px;
+    }
+
+    .museum.gameboy .museum-dpad {
+        grid-template-columns: repeat(3, 44px);
+        grid-template-rows: repeat(3, 44px);
+        filter: drop-shadow(0 4px 0 #8a5a55);
+    }
+
+    .museum.gameboy .museum-dpad button {
+        border: none;
+        border-radius: 4px;
+        background: #2a0d14;
+        font-size: 13px;
+        color: #6b4048;
+        box-shadow: none;
+    }
+
+    .museum.gameboy .museum-dpad button:active {
+        background: #150408;
+        color: #f09a97;
+    }
+
+    /* Centro de la cruceta, para que se vea como una sola cruz */
+    .museum.gameboy .museum-dpad::after {
+        content: "";
+        grid-area: 2 / 2;
+        background: #2a0d14;
+    }
+
+    .museum.gameboy .museum-ab {
+        gap: 18px;
+        rotate: -22deg;
+        translate: 0 -6px;
+    }
+
+    .museum.gameboy .museum-ab button {
+        width: 54px;
+        height: 54px;
+        border: none;
+        background: #a3303a;
+        font-size: 18px;
+        color: #f8dcd6;
+        box-shadow: 0 4px 0 #5a1f2c;
+    }
+
+    .museum.gameboy .museum-ab .a {
+        translate: 0 0;
+    }
+
+    .museum.gameboy .museum-ab button:active {
+        translate: 0 3px;
+        box-shadow: 0 1px 0 #5a1f2c;
+    }
+
+    .gb-startselect {
+        display: flex;
+        justify-content: center;
+        gap: 26px;
+        margin-top: 26px;
+    }
+
+    .gb-startselect button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        background: none;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #3a1520;
+        touch-action: none;
+    }
+
+    .gb-startselect span {
+        width: 48px;
+        height: 12px;
+        border-radius: 6px;
+        background: #6b4048;
+        rotate: -22deg;
+        box-shadow: 0 2px 0 #3a1520;
+    }
+
+    .gb-startselect button:active span {
+        background: #3a1520;
+    }
+
+    /* Rejilla del parlante */
+    .gb-speaker {
+        display: block;
+        align-self: flex-end;
+        width: 64px;
+        height: 44px;
+        margin: -6px 6px 0 0;
+        background: repeating-linear-gradient(115deg, #c98a83 0 4px, transparent 4px 10px);
+        border-radius: 6px;
+    }
+
+    .museum.gameboy .museum-keys {
+        display: none;
+    }
+
+    .museum.gameboy .museum-dialog {
+        padding: 8px 12px 10px;
+        border-width: 2px;
+    }
+
+    .museum.gameboy .museum-dialog p {
+        font-size: 13px;
+    }
+
+    .museum.gameboy .museum-dialog-name {
+        top: -13px;
+        font-size: 12px;
+    }
+
+    .museum.gameboy .museum-choices button {
+        font-size: 12px;
+    }
 }
 
 .classic-gallery {

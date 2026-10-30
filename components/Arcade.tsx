@@ -86,7 +86,8 @@ export default function Arcade({ lang, t, comingSoon }: Props) {
                 key={game.slug}
                 build={game.webBuild}
                 title={game.title}
-                labels={{ fullscreen: t.fullscreen, exit: t.exit }}
+                labels={{ fullscreen: t.fullscreen, exit: t.exit, exitFullscreen: t.exitFullscreen }}
+                hostUrl={game.links.play}
                 onExit={() => setPlaying(false)}
               />
             ) : (
