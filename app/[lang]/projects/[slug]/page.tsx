@@ -84,10 +84,21 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         )}
         <div>
-          {(links.play || links.github) && (
+          {(links.play || links.github || project.webBuild) && (
             <div className="project-buttons">
+              {/* Juegos con versión web: se abren en la máquina arcade del inicio */}
+              {project.webBuild && (
+                <Link className="play-button play-button-primary" href={`/${lang}?play=${slug}#arcade`}>
+                  {t.playInBrowser}
+                </Link>
+              )}
               {links.play && (
-                <a className="play-button play-button-primary" href={links.play} target="_blank" rel="noopener noreferrer">
+                <a
+                  className={project.webBuild ? "play-button" : "play-button play-button-primary"}
+                  href={links.play}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {t.play}
                   <span className="play-button-store">
                     {t.on} {playStore(links.play)}

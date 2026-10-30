@@ -8,6 +8,8 @@ type Props = { lang: Locale; t: Dictionary["footer"]; nav: Dictionary["nav"] };
 export default function Footer({ lang, t, nav }: Props) {
   const links = [
     { href: `/${lang}#projects`, label: nav.projects },
+    { href: `/${lang}#arcade`, label: nav.arcade },
+    { href: `/${lang}#tv`, label: nav.tv },
     { href: `/${lang}#skills`, label: nav.skills },
     { href: `/${lang}#about`, label: nav.about },
     { href: `/${lang}/gallery`, label: nav.gallery },

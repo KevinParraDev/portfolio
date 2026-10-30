@@ -85,6 +85,13 @@ export type Project = {
   slug: string;
   title: string;
   category: Category;
+  /**
+   * Dónde aparece en el inicio: "main" = proyectos principales (tarjetas grandes),
+   * "arcade" = el baúl de juegos (máquina arcade). Las animaciones salen en el televisor.
+   */
+  section: "main" | "arcade" | "tv";
+  /** Versión HTML5 para jugar dentro de la web (en la máquina arcade). */
+  webBuild?: WebBuild;
   genre: Text;
   /** Si no se sabe, no se muestra la etiqueta de estado. */
   status?: "released" | "in-progress";
@@ -136,6 +143,23 @@ export const playStore = (url: string) => {
 
 const image = (src: StaticImageData): Media => ({ type: "image", src });
 
+/**
+ * Build web de un juego. width/height es el tamaño original con el que se exportó: la máquina arcade
+ * carga el juego a ese tamaño y lo escala para que quepa entero en la pantalla.
+ */
+export type WebBuild = { url: string; width: number; height: number };
+
+/**
+ * Embed oficial de itch.io para juegos HTML5. El número es el "upload id" del build web
+ * (sale en el código de la página del juego en itch: html-classic.itch.zone/html/<ID>/...).
+ * Por defecto, el lienzo de Unity (960×600) más la barra inferior de la plantilla.
+ */
+const itchEmbed = (uploadId: number, width = 960, height = 640): WebBuild => ({
+  url: `https://itch.io/embed-upload/${uploadId}?color=000000`,
+  width,
+  height,
+});
+
 const indieLevel = { name: "Indie Level Studio", url: "https://indielevelstudio.com/es/" };
 const monteEstudio = { name: "Monte Estudio" };
 
@@ -152,12 +176,13 @@ const role = {
   design: { en: "Design", es: "Diseño" },
 } satisfies Record<string, Text>;
 
-// El orden de esta lista es el orden en que aparecen en la página.
 export const projects: Project[] = [
+  // ---- Proyectos principales (el orden es el de la página) ----
   {
     slug: "farmageddon",
     title: "Farmageddon",
     category: "game",
+    section: "main",
     genre: { en: "Co-op Action Roguelike", es: "Roguelike de acción cooperativo" },
     status: "in-progress",
     statusText: { en: "Demo on Steam", es: "Demo en Steam" },
@@ -201,6 +226,7 @@ export const projects: Project[] = [
     slug: "logicubes",
     title: "Logicubes",
     category: "game",
+    section: "main",
     genre: { en: "Puzzle Adventure Game", es: "Aventura de puzles" },
     status: "released",
     year: 2023,
@@ -241,72 +267,10 @@ export const projects: Project[] = [
     platforms: ["PC (Steam)", "Android", { en: "iOS (coming soon)", es: "iOS (próximamente)" }],
   },
   {
-    slug: "survive-bird",
-    title: "Survive Bird",
-    category: "game",
-    genre: { en: "Hypercasual Game", es: "Juego hipercasual" },
-    status: "released",
-    year: 2021,
-    cover: surviveBirdCover,
-    media: [
-      { type: "video", video: { provider: "youtube", id: "B6aaNSXehuA" }, thumbnail: surviveBirdV },
-      image(surviveBird1),
-      image(surviveBird2),
-      image(surviveBird3),
-    ],
-    links: {
-      play: "https://play.google.com/store/apps/details?id=com.KawiGames.SurviveBird",
-      github: "https://github.com/KevinParraDev/Survive-Bird",
-    },
-    description: {
-      en: [
-        "Survive Bird is a casual Android game where you'll be a bird and you'll have to survive for as long as possible by dodging all the obstacles that appear on the screen. The game features over 30 different birds; collect them all!",
-      ],
-      es: [
-        "Survive Bird es un juego casual para Android en el que eres un pájaro y tienes que sobrevivir el mayor tiempo posible esquivando todos los obstáculos que aparecen en pantalla. ¡Tiene más de 30 pájaros diferentes; colecciónalos todos!",
-      ],
-    },
-    roles: [role.gameDev, role.gameDesign, role.art2d, role.animation],
-    platforms: ["Android"],
-  },
-  {
-    slug: "la-aventura-unal",
-    title: "La Aventura UNAL",
-    category: "game",
-    genre: { en: "Turn-based Adventure Game", es: "Aventura por turnos" },
-    status: "released",
-    year: 2025,
-    statusText: { en: "2025 · Internal project", es: "2025 · Proyecto interno" },
-    cover: aventuraCover,
-    media: [image(aventura1), image(aventura2), image(aventura3), image(aventura4), image(aventura5), image(aventura6)],
-    links: {},
-    description: {
-      en: [
-        "La Aventura UNAL is a Pokémon-inspired adventure where you play as a student at the National University of Colombia, Medellín campus. Explore the campus, study hard and face your exams in turn-based battles, where every exam comes to life as an opponent.",
-        "Life on campus isn't only about exams: make time for extracurricular and wellness activities like painting, dancing, sports and, of course, eating. Pass every semester to finally earn your degree!",
-      ],
-      es: [
-        "La Aventura UNAL es una aventura inspirada en Pokémon en la que eres estudiante de la Universidad Nacional de Colombia, sede Medellín. Recorre el campus, estudia y enfrenta tus exámenes en batallas por turnos, donde cada examen cobra vida como un rival.",
-        "La vida en el campus no es solo exámenes: saca tiempo para actividades extracurriculares y de bienestar como pintar, bailar, hacer deporte y, por supuesto, comer. ¡Aprueba todos los semestres para graduarte!",
-      ],
-    },
-    roles: [
-      "Pixel Art",
-      role.animation,
-      { en: "Illustration", es: "Ilustración" },
-      role.uiArt,
-      role.levelDesign,
-      { en: "Mechanics & Minigame Design", es: "Diseño de mecánicas y minijuegos" },
-    ],
-    context: {
-      en: "Internal project for the National University of Colombia (not publicly available)",
-      es: "Proyecto interno de la Universidad Nacional de Colombia (no disponible al público)",
-    },
-  },
-  {
     slug: "berracos-espantos",
     title: "Berracos Espantos",
     category: "game",
+    section: "main",
     genre: { en: "Co-op Roguelite", es: "Roguelite cooperativo" },
     status: "in-progress",
     statusText: { en: "Playable prototype", es: "Prototipo jugable" },
@@ -340,6 +304,7 @@ export const projects: Project[] = [
     slug: "dino-party",
     title: "Dino Party",
     category: "game",
+    section: "main",
     genre: { en: "2.5D Party Game", es: "Juego party en 2.5D" },
     status: "in-progress",
     cover: dinoCover,
@@ -368,10 +333,43 @@ export const projects: Project[] = [
     studio: monteEstudio,
     players: "1–4",
   },
+  // ---- Baúl de juegos (máquina arcade) ----
+  {
+    slug: "survive-bird",
+    title: "Survive Bird",
+    category: "game",
+    section: "arcade",
+    genre: { en: "Hypercasual Game", es: "Juego hipercasual" },
+    status: "released",
+    year: 2021,
+    cover: surviveBirdCover,
+    media: [
+      { type: "video", video: { provider: "youtube", id: "B6aaNSXehuA" }, thumbnail: surviveBirdV },
+      image(surviveBird1),
+      image(surviveBird2),
+      image(surviveBird3),
+    ],
+    links: {
+      play: "https://play.google.com/store/apps/details?id=com.KawiGames.SurviveBird",
+      github: "https://github.com/KevinParraDev/Survive-Bird",
+    },
+    description: {
+      en: [
+        "Survive Bird is a casual Android game where you'll be a bird and you'll have to survive for as long as possible by dodging all the obstacles that appear on the screen. The game features over 30 different birds; collect them all!",
+      ],
+      es: [
+        "Survive Bird es un juego casual para Android en el que eres un pájaro y tienes que sobrevivir el mayor tiempo posible esquivando todos los obstáculos que aparecen en pantalla. ¡Tiene más de 30 pájaros diferentes; colecciónalos todos!",
+      ],
+    },
+    roles: [role.gameDev, role.gameDesign, role.art2d, role.animation],
+    platforms: ["Android"],
+  },
   {
     slug: "zeri-adventure",
     title: "Zeri's Adventure",
     category: "game",
+    section: "arcade",
+    webBuild: itchEmbed(8175534),
     genre: { en: "2D Metroidvania Game", es: "Metroidvania 2D" },
     status: "released",
     year: 2023,
@@ -400,9 +398,46 @@ export const projects: Project[] = [
     platforms: ["Web", "Windows"],
   },
   {
+    slug: "la-aventura-unal",
+    title: "La Aventura UNAL",
+    category: "game",
+    section: "arcade",
+    genre: { en: "Turn-based Adventure Game", es: "Aventura por turnos" },
+    status: "released",
+    year: 2025,
+    statusText: { en: "2025 · Internal project", es: "2025 · Proyecto interno" },
+    cover: aventuraCover,
+    media: [image(aventura1), image(aventura2), image(aventura3), image(aventura4), image(aventura5), image(aventura6)],
+    links: {},
+    description: {
+      en: [
+        "La Aventura UNAL is a Pokémon-inspired adventure where you play as a student at the National University of Colombia, Medellín campus. Explore the campus, study hard and face your exams in turn-based battles, where every exam comes to life as an opponent.",
+        "Life on campus isn't only about exams: make time for extracurricular and wellness activities like painting, dancing, sports and, of course, eating. Pass every semester to finally earn your degree!",
+      ],
+      es: [
+        "La Aventura UNAL es una aventura inspirada en Pokémon en la que eres estudiante de la Universidad Nacional de Colombia, sede Medellín. Recorre el campus, estudia y enfrenta tus exámenes en batallas por turnos, donde cada examen cobra vida como un rival.",
+        "La vida en el campus no es solo exámenes: saca tiempo para actividades extracurriculares y de bienestar como pintar, bailar, hacer deporte y, por supuesto, comer. ¡Aprueba todos los semestres para graduarte!",
+      ],
+    },
+    roles: [
+      "Pixel Art",
+      role.animation,
+      { en: "Illustration", es: "Ilustración" },
+      role.uiArt,
+      role.levelDesign,
+      { en: "Mechanics & Minigame Design", es: "Diseño de mecánicas y minijuegos" },
+    ],
+    context: {
+      en: "Internal project for the National University of Colombia (not publicly available)",
+      es: "Proyecto interno de la Universidad Nacional de Colombia (no disponible al público)",
+    },
+  },
+  {
     slug: "knock-it-out",
     title: "Knock It Out: The Show",
     category: "game",
+    section: "arcade",
+    webBuild: itchEmbed(9604224),
     genre: { en: "2D Platformer Game", es: "Plataformero 2D" },
     status: "released",
     year: 2024,
@@ -436,6 +471,7 @@ export const projects: Project[] = [
     slug: "grecko-vs-machine",
     title: "Grecko Vs Machine",
     category: "game",
+    section: "arcade",
     genre: { en: "2D Platformer Game", es: "Plataformero 2D" },
     status: "in-progress",
     cover: greckoCover,
@@ -457,6 +493,7 @@ export const projects: Project[] = [
     slug: "hamster-run",
     title: "Hamster Run",
     category: "game",
+    section: "arcade",
     genre: { en: "Vertical Runner Game", es: "Runner vertical" },
     status: "in-progress",
     cover: hamsterCover,
@@ -479,6 +516,8 @@ export const projects: Project[] = [
     slug: "domino",
     title: "Domino",
     category: "game",
+    section: "arcade",
+    webBuild: itchEmbed(8200095),
     genre: { en: "Board Game", es: "Juego de mesa" },
     status: "released",
     year: 2022,
@@ -510,10 +549,12 @@ export const projects: Project[] = [
       es: "Materia de Estructuras de Datos — Universidad Nacional de Colombia",
     },
   },
+  // ---- Animaciones (televisor) ----
   {
     slug: "maquinas-del-futuro",
     title: "Maquinas del Futuro",
     category: "animation",
+    section: "tv",
     genre: { en: "Animated Short", es: "Cortometraje animado" },
     status: "released",
     year: 2023,
@@ -539,6 +580,7 @@ export const projects: Project[] = [
     slug: "el-amigo-robot",
     title: "El Amigo Robot",
     category: "animation",
+    section: "tv",
     genre: { en: "Animated Short", es: "Cortometraje animado" },
     status: "released",
     year: 2024,

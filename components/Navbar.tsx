@@ -8,7 +8,7 @@ import { RESUME_URL, socials } from "@/data/site";
 import { LOCALE_COOKIE, locales, switchLocalePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-const SECTIONS = ["home", "projects", "skills", "about"] as const;
+const SECTIONS = ["home", "projects", "arcade", "tv", "skills", "about"] as const;
 type Section = (typeof SECTIONS)[number];
 
 type Props = { lang: Locale; t: Dictionary["nav"] };
