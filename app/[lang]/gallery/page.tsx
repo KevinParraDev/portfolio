@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image, { type StaticImageData } from "next/image";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import Museum from "@/components/museum/Museum";
 import kio1 from "@/public/img/galery/kio (1).gif";
 import kio2 from "@/public/img/galery/kio (2).gif";
 import kio3 from "@/public/img/galery/kio (3).gif";
@@ -58,11 +59,21 @@ const environments = [
 const extras = [extra1, extra2, extra3, extra4];
 
 // GIFs se sirven sin optimizar para que conserven la animación.
+// La galería es el Museo KP (un mini juego); debajo queda la vista clásica con todas las obras,
+// para quien no quiera jugar y para que Google y los lectores de pantalla vean el arte.
 export default async function GalleryPage({ params }: PageProps<"/[lang]/gallery">) {
-  const t = getDictionary((await params).lang as Locale).gallery;
+  const lang = (await params).lang as Locale;
+  const dict = getDictionary(lang);
+  const t = dict.gallery;
 
   return (
-    <div className="game">
+    <div className="game gallery-page">
+      <h1>{dict.museum.title}</h1>
+      <p className="section-intro">{dict.museum.intro}</p>
+      <Museum lang={lang} t={dict.museum} />
+
+      <details className="classic-gallery">
+        <summary>{t.classic}</summary>
       <h1>{t.characters}</h1>
       {characters.map(({ name, from, items }, i) => (
         <section key={i} data-reveal>
@@ -95,6 +106,7 @@ export default async function GalleryPage({ params }: PageProps<"/[lang]/gallery
       {extras.map((src, i) => (
         <Image key={i} src={src} alt={`Extra artwork ${i + 1}`} quality={100} className="image-galery-env" sizes="(max-width: 800px) 100vw, 50vw" />
       ))}
+      </details>
     </div>
   );
 }

@@ -2470,6 +2470,298 @@ textarea {
     }
 }
 
+/* ------------------  Museo (galería)  -------------------- */
+
+.gallery-page {
+    padding-top: 100px;
+}
+
+.museum {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 40px;
+}
+
+.museum-frame {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    outline: none;
+}
+
+.museum-screen {
+    position: relative;
+    max-width: 100%;
+    border: 2px solid var(--neon);
+    border-radius: 6px;
+    background: #050102;
+    box-shadow: var(--glow);
+    overflow: hidden;
+}
+
+.museum-frame:focus-visible .museum-screen {
+    border-color: var(--neon-gold);
+    box-shadow: var(--glow-gold);
+}
+
+.museum-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+.museum-loading,
+.museum-start {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--neon-gold);
+    text-shadow: 0 0 6px var(--neon-gold);
+}
+
+.museum-loading {
+    background: #050102;
+    animation: dim-blink 1s steps(1) infinite;
+}
+
+.museum-start {
+    width: 100%;
+    border: none;
+    background: #05010288;
+    cursor: pointer;
+    animation: dim-blink 1.4s steps(1) infinite;
+}
+
+/* Cuadro de diálogo estilo Pokémon */
+.museum-dialog {
+    position: absolute;
+    left: 3%;
+    right: 3%;
+    bottom: 4%;
+    min-height: 28%;
+    padding: 12px 18px 14px;
+    border: 3px solid #150408;
+    border-radius: 8px;
+    background: #fdf3ea;
+    box-shadow: inset 0 0 0 3px var(--neon-pink), 0 4px 0 #0b0305;
+    color: #150408;
+    text-align: left;
+}
+
+.museum-dialog p {
+    font-size: clamp(14px, 2.2vw, 22px);
+    line-height: 1.35;
+    color: #150408;
+}
+
+.museum-dialog-name {
+    position: absolute;
+    top: -16px;
+    left: 14px;
+    padding: 0 10px;
+    border: 3px solid #150408;
+    border-radius: 6px;
+    background: var(--neon-gold);
+    font-size: 15px;
+    color: #150408;
+}
+
+.museum-next {
+    position: absolute;
+    right: 14px;
+    bottom: 8px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: #a3303a;
+    cursor: pointer;
+    animation: next-bounce 0.8s steps(2) infinite;
+}
+
+@keyframes next-bounce {
+    50% {
+        translate: 0 3px;
+    }
+}
+
+.museum-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 8px;
+    list-style: none;
+}
+
+.museum-choices button {
+    position: relative;
+    padding: 2px 4px 2px 18px;
+    border: none;
+    background: none;
+    font-size: clamp(13px, 2vw, 19px);
+    color: #150408;
+    cursor: pointer;
+}
+
+.museum-choices button.active::before,
+.museum-choices button:hover::before {
+    content: "▶";
+    position: absolute;
+    left: 2px;
+    font-size: 0.75em;
+    top: 50%;
+    translate: 0 -50%;
+    color: #a3303a;
+}
+
+.museum-keys {
+    font-size: 15px;
+    color: var(--neon-pink);
+    text-align: center;
+}
+
+/* Visor de la obra en grande */
+.museum-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 10003;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: #050102e6;
+}
+
+.museum-viewer figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: min(1100px, 100%);
+}
+
+.museum-viewer img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 72vh;
+    min-height: min(50vh, 400px);
+    object-fit: contain;
+    image-rendering: pixelated;
+    border: 4px solid var(--neon-gold);
+    border-radius: 4px;
+    box-shadow: var(--glow-gold);
+}
+
+.museum-viewer figcaption {
+    font-size: 18px;
+    text-align: center;
+}
+
+.museum-viewer figcaption strong {
+    color: var(--neon-gold);
+}
+
+.museum-viewer button {
+    padding: 4px 16px;
+    border: 2px solid var(--neon);
+    border-radius: 6px;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Cruceta y botones A/B: solo en pantallas táctiles */
+.museum-pad {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: min(420px, 100%);
+    padding: 0 10px;
+    touch-action: none;
+    user-select: none;
+}
+
+@media (pointer: coarse) {
+    .museum-pad {
+        display: flex;
+    }
+
+    .museum-start,
+    .museum-keys {
+        display: none;
+    }
+}
+
+.museum-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 46px);
+    grid-template-rows: repeat(3, 46px);
+}
+
+.museum-dpad button,
+.museum-ab button {
+    border: 2px solid var(--neon);
+    background: #150408;
+    font-size: 18px;
+    box-shadow: var(--glow);
+    touch-action: none;
+}
+
+.museum-dpad button:active,
+.museum-ab button:active {
+    background: var(--neon);
+    color: #150408;
+}
+
+.museum-dpad .up { grid-area: 1 / 2; border-radius: 8px 8px 0 0; }
+.museum-dpad .left { grid-area: 2 / 1; border-radius: 8px 0 0 8px; }
+.museum-dpad .right { grid-area: 2 / 3; border-radius: 0 8px 8px 0; }
+.museum-dpad .down { grid-area: 3 / 2; border-radius: 0 0 8px 8px; }
+
+.museum-ab {
+    display: flex;
+    gap: 14px;
+    translate: 0 -12px;
+}
+
+.museum-ab button {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.museum-ab .a {
+    border-color: var(--neon-gold);
+    color: var(--neon-gold);
+    box-shadow: var(--glow-gold);
+    translate: 0 -16px;
+}
+
+.classic-gallery {
+    margin-top: 20px;
+}
+
+.classic-gallery summary {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid var(--neon);
+    border-radius: 6px;
+    box-shadow: var(--glow);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.classic-gallery[open] summary {
+    margin-bottom: 30px;
+}
+
 /* ------------------  About  -------------------- */
 
 #about {
